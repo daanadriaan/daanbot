@@ -21,8 +21,22 @@ class Option extends Model
         $option->x = $node['x'];
         $option->y = $node['y'];
 
-        // Hier moet de nieuwe node komen..
-        $option->redirect_to = 1;
+        // Attach redirect to
+        $links = array_filter(
+            $request->links,
+            function($link) use ($node){ return $link['from'] === $node['id'];}
+        ); // List of relevant links
+
+        if(count($links) > 0){
+            $redirects = array_filter($request->nodes, function($node) use ($links){ return $node['id'] === array_values($links)[0]['to'];});
+            $redirect = array_values($redirects)[0];
+
+            $type = Type::find($redirect['real_id']);
+            $type->x = $redirect['x'];
+            $type->y = $redirect['y'];
+            $option->redirect_to = optional($type)->id;
+        }
+
 
         $option->save();
 
