@@ -34,6 +34,7 @@ class Option extends Model
             $type = Type::find($redirect['real_id']);
             $type->x = $redirect['x'];
             $type->y = $redirect['y'];
+            $type->save();
             $option->redirect_to = optional($type)->id;
         }
 
