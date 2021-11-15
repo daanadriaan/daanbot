@@ -26,7 +26,7 @@ class CreateOptionsTable extends Migration
         });
         Schema::create('options', function (Blueprint $table) {
             $table->id();
-            $table->integer('redirect_to');
+            $table->integer('redirect_to')->nullable();
         });
     }
 

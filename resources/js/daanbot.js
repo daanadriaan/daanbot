@@ -20,15 +20,13 @@ window.Echo = new Echo({
             Authorization: "Bearer " + localStorage.getItem("token"),
         },
     },
-
 });
 
 new Vue({
     el: '#daanbot',
     data() {
         return {
-            config:{},
-            sessions:{}
+
         };
     },
     created() {

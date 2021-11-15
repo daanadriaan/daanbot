@@ -37,7 +37,10 @@ class Conversation extends Model
         $conversation->token = $token;
         $conversation->save();
 
-        $conversation->createChatFromType(Type::find(1));
+        $flow = Flow::first();
+        $type = $flow->start;
+
+        $conversation->createChatFromType($type);
 
         $conversation->load('chats');
 

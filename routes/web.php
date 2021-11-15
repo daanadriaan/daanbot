@@ -19,8 +19,16 @@ Route::middleware('session')->group(function(){
     Route::post('/conversation/choose', [BotController::class, 'choose']);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware('auth')->group(function(){
+    Route::get('/flows', [BotController::class, 'flows']);
+    Route::get('/flows/{flow}', [BotController::class, 'flow']);
+    Route::post('/flows/{flow}', [BotController::class, 'storeFlow']);
+    Route::post('/flows/{flow}/chats/new', [BotController::class, 'newChat']);
+    Route::post('/flows/{flow}/options/new', [BotController::class, 'newOption']);
+
+    Route::get('/maker', [BotController::class, 'maker']);
+    Route::get('/maker/{id}', [BotController::class, 'maker']);
+});
+
 
 require __DIR__.'/auth.php';

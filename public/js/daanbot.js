@@ -2308,10 +2308,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_1__["default"]({
 new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
   el: '#daanbot',
   data: function data() {
-    return {
-      config: {},
-      sessions: {}
-    };
+    return {};
   },
   created: function created() {// Private
 
