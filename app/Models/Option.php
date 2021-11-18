@@ -6,13 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 class Option extends Model
 {
     protected $visible = ['id', 'pivot'];
+    public $appends = ['redirect'];
 
     public function types(){
         return $this->belongsToMany(Type::class)->withPivot('label');
     }
-
-    public function redirect(){
-        return $this->belongsTo(Type::class, 'redirect_to');
+    public function getRedirectAttribute(){
+        return $this->redirects()->inRandomOrder()->first();
+    }
+    public function redirects(){
+        return $this->belongsToMany(Type::class, 'redirects', 'option_id', 'type_id');
     }
 
     public static function findOrCreate($node, $chat, $request){
@@ -24,21 +27,29 @@ class Option extends Model
         $option->y = $node['y'];
 
         // Attach redirect to
-        $links = array_filter(
-            $request->links,
-            function($link) use ($node){ return $link['from'] === $node['id'];}
+        $links = array_map(function($link){
+                return $link['to'];
+            }, array_filter(
+                $request->links,
+                function($link) use ($node){
+                    return $link['from'] === $node['id'];
+                }
+            )
         ); // List of relevant links
 
+        \Log::debug($links);
+
+        $option->redirects()->detach();
         if(count($links) > 0){
-            $redirects = array_filter($request->nodes, function($node) use ($links){ return $node['id'] === array_values($links)[0]['to'];});
-            $redirect = array_values($redirects)[0];
+            $redirects = array_filter($request->nodes, function($node) use ($links){
+                return in_array($node['id'], $links);
+            });
 
-            $type = Type::findOrCreate($redirect, $chat->flow, $request);
-
-//            $type->x = $redirect['x'];
-//            $type->y = $redirect['y'];
-//            $type->save();
-            $option->redirect_to = optional($type)->id;
+            \Log::debug($redirects);
+            foreach(array_values($redirects) as $redirect){
+                $type = Type::findOrCreate($redirect, $chat->flow, $request);
+                $option->redirects()->attach($type);
+            }
         }
 
         $option->save();

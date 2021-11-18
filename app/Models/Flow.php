@@ -28,7 +28,7 @@ class Flow extends Model
         ];
 
         foreach($this->types as $type){
-            $node = rand(0, 1000)+ $type->id;
+            $node = rand(0, 10000000)+ $type->id;
             $flow['nodes'][] = [
                 'id' => $node,
                 'real_id' => $type->id,
@@ -58,19 +58,17 @@ class Flow extends Model
         // Create additional links
         foreach($this->types as $type){
             foreach($type->options as $option){
-                if($option->redirect_to){
-                    $from = array_values(array_filter($flow['nodes'], function($node) use ($option){
-                        return $node['type'] === 'Option' && $node['real_id'] === $option->id;
-                    }));
-                    $to = array_values(array_filter($flow['nodes'], function($node) use ($option){
-                        return $node['type'] === 'Chat' && $node['real_id'] === $option->redirect_to;
-                    }));
-                    if(count($from) > 0 && count($to) > 0){
-                        $flow['links'][] = [
-                            'id' => rand(0, 100000000),
-                            'from' => $from[0]['id'],
-                            'to' => $to[0]['id']
-                        ];
+                $from = array_values(array_filter($flow['nodes'], function($node) use ($option){
+                    return $node['type'] === 'Option' && $node['real_id'] === $option->id;
+                }));
+                if(count($from) > 0){
+                    foreach($option->redirects as $key => $redirect){
+                        $to = array_values(array_filter($flow['nodes'], function ($node) use ($redirect){
+                            return $node['type'] === 'Chat' && $node['real_id'] === $redirect->id;
+                        }));
+                        if(count($to) > 0){
+                            $flow['links'][] = ['id' => rand(0, 100000000), 'from' => $from[0]['id'], 'to' => $to[0]['id']];
+                        }
                     }
                 }
             }
