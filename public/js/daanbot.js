@@ -2214,11 +2214,12 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/conversation').then(function (response) {
+        console.log(response.data);
         _this.loading = false;
         _this.chats = _this.chats.concat(response.data.chats);
         _this.options = _this.chats[_this.chats.length - 1].options;
       })["catch"](function (error) {
-        alert('hi2');
+        console.log(error);
       });
     },
     chooseOption: function chooseOption(option) {
@@ -2230,7 +2231,7 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
         _this2.chats = _this2.chats.concat(response.data.chats);
         _this2.options = _this2.chats[_this2.chats.length - 1].options;
       })["catch"](function (error) {
-        alert('hi2');
+        console.log(error);
       });
     }
   }

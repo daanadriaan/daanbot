@@ -44,12 +44,13 @@ export default {
         get(){
             axios.get('/conversation')
                 .then(response => {
+                    console.log(response.data);
                     this.loading = false;
                     this.chats = this.chats.concat(response.data.chats);
                     this.options = this.chats[this.chats.length - 1].options;
 
                 }).catch(error => {
-                    alert('hi2');
+                    console.log(error);
                 });
         },
         chooseOption(option){
@@ -59,7 +60,7 @@ export default {
                     this.options = this.chats[this.chats.length - 1].options;
 
                 }).catch(error => {
-                    alert('hi2');
+                    console.log(error);
                 });
         }
     }

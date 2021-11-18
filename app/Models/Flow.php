@@ -54,6 +54,28 @@ class Flow extends Model
                 ];
             }
         }
+
+        // Create additional links
+        foreach($this->types as $type){
+            foreach($type->options as $option){
+                if($option->redirect_to){
+                    $from = array_values(array_filter($flow['nodes'], function($node) use ($option){
+                        return $node['type'] === 'Option' && $node['real_id'] === $option->id;
+                    }));
+                    $to = array_values(array_filter($flow['nodes'], function($node) use ($option){
+                        return $node['type'] === 'Chat' && $node['real_id'] === $option->redirect_to;
+                    }));
+                    if(count($from) > 0 && count($to) > 0){
+                        $flow['links'][] = [
+                            'id' => rand(0, 100000000),
+                            'from' => $from[0]['id'],
+                            'to' => $to[0]['id']
+                        ];
+                    }
+                }
+            }
+        }
+
         return (object) $flow;
     }
 
@@ -74,15 +96,12 @@ class Flow extends Model
             )
         )->delete();
 
-       // \Log::debug(array_map(function($node){ return $node['to']; }, $request->links));
-
         // Without start
         $loose = array_filter($request->nodes, function($node) use ($request){
             return $node['type'] === 'Chat' && !in_array($node['id'], array_map(function($node){ return $node['to']; }, $request->links));
         });
 
         if(count($loose) !== 1){
-            \Log::debug($loose);
             return false;
         }
         $start = $loose[0];
@@ -93,9 +112,20 @@ class Flow extends Model
             $this->save();
         }
 
+        // Update coordinates for all
+        foreach($this->types as $type){
+            $node = $this->getNodeFromModel($type, $request);
+            $type->x = $node['x'];
+            $type->y = $node['y'];
+            $type->save();
+        }
+
         $this->refresh();
 
         return $this->toNodes();
+    }
 
+    private function getNodeFromModel($type, $request){
+        return array_values(array_filter($request->nodes, function($n) use ($type){ return $n['type'] === 'Chat' && $n['real_id'] === $type->id;}))[0];
     }
 }

@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
+    protected $visible = ['id', 'pivot'];
+
     public function types(){
         return $this->belongsToMany(Type::class)->withPivot('label');
     }
@@ -31,13 +33,13 @@ class Option extends Model
             $redirects = array_filter($request->nodes, function($node) use ($links){ return $node['id'] === array_values($links)[0]['to'];});
             $redirect = array_values($redirects)[0];
 
-            $type = Type::find($redirect['real_id']);
-            $type->x = $redirect['x'];
-            $type->y = $redirect['y'];
-            $type->save();
+            $type = Type::findOrCreate($redirect, $chat->flow, $request);
+
+//            $type->x = $redirect['x'];
+//            $type->y = $redirect['y'];
+//            $type->save();
             $option->redirect_to = optional($type)->id;
         }
-
 
         $option->save();
 

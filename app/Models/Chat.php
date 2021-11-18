@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class Chat extends Model
 {
     public $appends = ['options'];
+    protected $visible = ['content', 'options'];
 
     public function conversation(){
         return $this->belongsTo(Conversation::class);

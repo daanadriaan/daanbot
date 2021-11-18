@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MakerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BotController;
 /*
@@ -20,14 +21,14 @@ Route::middleware('session')->group(function(){
 });
 
 Route::middleware('auth')->group(function(){
-    Route::get('/flows', [BotController::class, 'flows']);
-    Route::get('/flows/{flow}', [BotController::class, 'flow']);
-    Route::post('/flows/{flow}', [BotController::class, 'storeFlow']);
-    Route::post('/flows/{flow}/chats/new', [BotController::class, 'newChat']);
-    Route::post('/flows/{flow}/options/new', [BotController::class, 'newOption']);
+    Route::get('/flows', [MakerController::class, 'flows']);
+    Route::get('/flows/{flow}', [MakerController::class, 'flow']);
+    Route::post('/flows/{flow}', [MakerController::class, 'storeFlow']);
+    Route::post('/flows/{flow}/chats/new', [MakerController::class, 'newChat']);
+    Route::post('/flows/{flow}/options/new', [MakerController::class, 'newOption']);
 
-    Route::get('/maker', [BotController::class, 'maker']);
-    Route::get('/maker/{id}', [BotController::class, 'maker']);
+    Route::get('/maker', [MakerController::class, 'maker']);
+    Route::get('/maker/{id}', [MakerController::class, 'maker']);
 });
 
 
