@@ -37,15 +37,13 @@ class Option extends Model
             )
         ); // List of relevant links
 
-        \Log::debug($links);
 
         $option->redirects()->detach();
         if(count($links) > 0){
             $redirects = array_filter($request->nodes, function($node) use ($links){
                 return in_array($node['id'], $links);
             });
-
-            \Log::debug($redirects);
+            
             foreach(array_values($redirects) as $redirect){
                 $type = Type::findOrCreate($redirect, $chat->flow, $request);
                 $option->redirects()->attach($type);
