@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Flow;
-use App\Models\Option;
-use App\Models\Type;
+use App\Models\Steps\Option;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 

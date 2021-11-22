@@ -1,8 +1,9 @@
 <?php
 namespace App\Models;
 
+use App\Models\Steps\Response;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class Flow extends Model
 {
@@ -10,12 +11,12 @@ class Flow extends Model
         'meta' => 'object',
     ];
 
-    public function types(){
-        return $this->hasMany(Type::class);
+    public function steps(){
+        return $this->hasMany(Step::class);
     }
 
     public function start(){
-        return $this->belongsTo(Type::class, 'type_id');
+        return $this->belongsTo(Response::class, 'type_id');
     }
 
     public function toNodes(){
@@ -27,50 +28,21 @@ class Flow extends Model
             'links' => []
         ];
 
-        foreach($this->types as $type){
-            $node = rand(0, 10000000)+ $type->id;
-            $flow['nodes'][] = [
-                'id' => $node,
-                'real_id' => $type->id,
-                'label' => $type->label,
-                'type' => 'Chat',
-                'x' => $type->x,
-                'y' => $type->y,
-            ];
-            foreach($type->options as $option){
-                $id = rand(0, 100000000)+ $option->id;
-                $flow['nodes'][] = [
-                    'id' => $id,
-                    'real_id' => $option->id,
-                    'label' => $option->pivot->label,
-                    'type' => 'Option',
-                    'x' => $option->x,
-                    'y' => $option->y,
-                ];
+        // Create nodes
+        foreach($this->steps as $step){
+            $flow['nodes'][] = $step->toNode();
+        }
+        // Create steps
+        foreach($this->steps as $step){
+            $from = $this->getNodeFromNodesByModel($step, $flow['nodes']);
+            foreach($step->children as $child){
+                $to = $this->getNodeFromNodesByModel($child, $flow['nodes']);
+
                 $flow['links'][] = [
                     'id' => rand(0, 100000000),
-                    'from' => $node,
-                    'to' => $id,
+                    'from' => $from['id'],
+                    'to' => $to['id'],
                 ];
-            }
-        }
-
-        // Create additional links
-        foreach($this->types as $type){
-            foreach($type->options as $option){
-                $from = array_values(array_filter($flow['nodes'], function($node) use ($option){
-                    return $node['type'] === 'Option' && $node['real_id'] === $option->id;
-                }));
-                if(count($from) > 0){
-                    foreach($option->redirects as $key => $redirect){
-                        $to = array_values(array_filter($flow['nodes'], function ($node) use ($redirect){
-                            return $node['type'] === 'Chat' && $node['real_id'] === $redirect->id;
-                        }));
-                        if(count($to) > 0){
-                            $flow['links'][] = ['id' => rand(0, 100000000), 'from' => $from[0]['id'], 'to' => $to[0]['id']];
-                        }
-                    }
-                }
             }
         }
 
@@ -84,19 +56,44 @@ class Flow extends Model
             'scale' => $request->scale
         ];
 
-        // Delete nodes that were not given
-        $this->types()->whereNotIn('id',
-            array_map(function($n){return $n['real_id'];},
-                array_filter(
-                    $request->nodes,
-                    function($n){ return $n['type'] === 'Chat'; }
-                )
-            )
-        )->delete();
+        $this->deleteOldSteps($request);
 
-        // Without start
+        if(!$this->determineStart($request)){
+            // TODO: Throw error;
+            return false;
+        }
+
+        $this->syncSteps($request);
+
+        $this->refresh();
+
+        return $this->toNodes();
+    }
+
+    private function getNodeFromNodesByModel($step, $nodes){
+        $matches = array_values(array_filter($nodes, function($f) use ($step){ return $f['real_id'] === $step->id;}));
+        return isset($matches[0]) ? $matches[0] : null;
+    }
+
+    private function deleteOldSteps($request){
+        // Delete nodes that were not given
+        $steps = $this->steps()->whereNotIn('id',
+            array_map(function($n){ return $n['real_id'] ?? ''; },
+                $request->nodes
+            )
+        )->get();
+
+        foreach($steps as $step){
+            $step->parents()->detach();
+            $step->children()->detach();
+            $step->delete();
+        }
+    }
+
+    private function determineStart($request){
+
         $loose = array_filter($request->nodes, function($node) use ($request){
-            return $node['type'] === 'Chat' && !in_array($node['id'], array_map(function($node){ return $node['to']; }, $request->links));
+            return $node['type'] === 'Response' && !in_array($node['id'], array_map(function($node){ return $node['to']; }, $request->links));
         });
 
         if(count($loose) !== 1){
@@ -104,26 +101,36 @@ class Flow extends Model
         }
         $start = $loose[0];
 
-        if($start['type'] === 'Chat'){
-            $chat = Type::findOrCreate($start, $this, $request);
-            $this->type_id = $chat->id;
-            $this->save();
-        }
+        $chat = Step::findFromNodeOrCreate($start, $this);
+        $flow = $this;
+        $flow->type_id = $chat->id;
+        $flow->save();
 
-        // Update coordinates for all
-        foreach($this->types as $type){
-            $node = $this->getNodeFromModel($type, $request);
-            $type->x = $node['x'];
-            $type->y = $node['y'];
-            $type->save();
-        }
-
-        $this->refresh();
-
-        return $this->toNodes();
+        return true;
     }
 
-    private function getNodeFromModel($type, $request){
-        return array_values(array_filter($request->nodes, function($n) use ($type){ return $n['type'] === 'Chat' && $n['real_id'] === $type->id;}))[0];
+    private function syncSteps($request){
+        foreach($request->nodes as $node){
+            $step = Step::findFromNodeOrCreate($node, $this);
+
+            $step->parents()->detach();
+            $step->children()->detach();
+        }
+
+        foreach($request->links as $link){
+            DB::table('redirects')->insert([
+                'from' => $this->nodeIdToRealId($link['from'], $request->nodes),
+                'to' =>  $this->nodeIdToRealId($link['to'], $request->nodes),
+            ]);
+        }
+
+        return true;
+    }
+
+    private function nodeIdToRealId($id, $nodes){
+        $match = array_values(array_filter($nodes, function($node) use ($id){
+                return $node['id'] === $id;
+            }))[0];
+        return $match['real_id'];
     }
 }

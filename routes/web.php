@@ -24,8 +24,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/flows', [MakerController::class, 'flows']);
     Route::get('/flows/{flow}', [MakerController::class, 'flow']);
     Route::post('/flows/{flow}', [MakerController::class, 'storeFlow']);
-    Route::post('/flows/{flow}/chats/new', [MakerController::class, 'newChat']);
-    Route::post('/flows/{flow}/options/new', [MakerController::class, 'newOption']);
+    Route::post('/flows/{flow}/steps/new', [MakerController::class, 'newChat']);
 
     Route::get('/maker', [MakerController::class, 'maker']);
     Route::get('/maker/{id}', [MakerController::class, 'maker']);

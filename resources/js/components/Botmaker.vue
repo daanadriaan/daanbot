@@ -1,10 +1,10 @@
 <template>
     <div class="botmaker">
         <div class="botmaker-menu">
-            <div class="botmaker-menu__button" @click="addChat">+ Chat</div>
-            <div class="botmaker-menu__button" @click="addOption">+ Option</div>
-            <div class="botmaker-menu__button" @click="undo">< Undo</div>
-            <div class="botmaker-menu__button" @click="store">↓ Save</div>
+            <div class="botmaker__button" @click="addStep('Response')">+ Chat</div>
+            <div class="botmaker__button" @click="addStep('Option')">+ Option</div>
+            <div class="botmaker__button" @click="undo">< Undo</div>
+            <div class="botmaker__button" @click="store">↓ Save</div>
         </div>
         <flow :scene.sync="data"
               @nodeClick="nodeClick"
@@ -12,18 +12,30 @@
               @linkBreak="linkBreak"
               @linkAdded="linkAdded"
               @canvasClick="canvasClick"/>
+        <div v-if="editable" class="botmaker-window">
+            <div>
+                <input v-model="editable.label">
+            </div>
+            <div>
+                <editor v-model='editable.content'
+                        :init='editorOptions'></editor>
+            </div>
+            <div class="botmaker__button mt-5" @click="saveEditable">Opslaan</div>
+        </div>
     </div>
 </template>
 
 <script>
 import axios from "axios";
 import Flow from 'vue-simple-flowchart';
+require('../tinymce_init.js');
 require('vue-simple-flowchart/dist/vue-flowchart.css');
+import Editor from '@tinymce/tinymce-vue';
 
 export default {
     props:[],
     components:{
-        Flow
+        Flow, Editor
     },
     data() {
         return {
@@ -34,11 +46,41 @@ export default {
                 nodes: [],
                 links: []
             },
+            editable: null,
+            editorOptions:   {
+                path_absolute:               '/',
+                language:                    'nl',
+                theme:                       'modern',
+                resize:                      false,
+                //content_css:                 '/css/tinymce_content.css',
+                menu:                        {
+                    edit:   {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+                    format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript'},
+                    table:  {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+                },
+                autoresize_min_height:       350,
+                autoresize_max_height:       1000,
+                autoresize_overflow_padding: 10,
+                autoresize_on_init:          true,
+                fontsize_formats:            '15px 18px 20px',
+                placeholder:                 'Typ of plak jouw tekst in dit venster..',
+                plugins:                     [
+                    'placeholder',
+                    'autoresize advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'emoticons template paste'
+                ],
+                toolbar:                     'undo | bold italic | bullist numlist | link hr | code',
+            },
         }
     },
     computed: {
         lastId(){
             return this.data.nodes.length ? this.max(this.data.nodes.map(item => item.id)) : 1;
+        },
+        selected(){
+            return this.data.nodes.filter(node => { return node.options?.selected; });
         },
         center(){
             return this.data.nodes.length ? {
@@ -70,32 +112,15 @@ export default {
             }
             return total / array.length;
         },
-        addChat(){
+        addStep(type){
             var data = {
                 id: this.lastId + 1,
                 x: this.center.x + 20,
                 y: this.center.y + 20,
-                type: 'Chat',
-                label: 'Nieuwe chat'
+                type: type,
+                label: 'Nieuwe '+type
             };
-            axios.post('/flows/'+this.$route.params.id+'/chats/new', data)
-                .then(response => {
-                    data.real_id = response.data.id;
-                    this.data.nodes.push(data);
-                }).catch(error => {
-                    console.log(error);
-                });
-
-        },
-        addOption(){
-            var data = {
-                id: this.lastId + 1,
-                x: this.center.x + 20,
-                y: this.center.y + 20,
-                type: 'Option',
-                label: 'Nieuwe optie'
-            };
-            axios.post('/flows/'+this.$route.params.id+'/options/new', data)
+            axios.post('/flows/'+this.$route.params.id+'/steps/new', data)
                 .then(response => {
                     data.real_id = response.data.id;
                     this.data.nodes.push(data);
@@ -107,6 +132,7 @@ export default {
 
         },
         store(){
+
             axios.post('/flows/'+this.$route.params.id, this.data)
                 .then(response => {
                     // console.log(response.data);
@@ -115,20 +141,26 @@ export default {
                 console.log(error);
             });
         },
-        nodeClick(){
-            console.log('nodeClick');
+        nodeClick(id){
+            this.editable = id ? this.data.nodes.filter(node => {return node.id === id})[0] : null;
         },
         nodeDelete(){
             console.log('nodeDelete');
         },
-        linkBreak(){
-            console.log('linkBreak');
+        linkBreak(link){
+            this.data.links = this.data.links.filter(l => {return l.id !== link.id});
+
+            console.log(this.data.links);
         },
         linkAdded(){
             console.log('linkAdded');
         },
         canvasClick(){
             console.log('canvasClick');
+        },
+        saveEditable(){
+            this.store();
+            this.editable = null;
         }
     }
 }
@@ -138,15 +170,35 @@ export default {
 .flowchart-container, .flowchart-container svg{
     height: 100vh;
 }
-.botmaker{
+.botmaker {
     position: relative;
-}
-.botmaker-menu{
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding:10px;
-    z-index: 1;
+
+    &-window {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 500px;
+        height: 100%;
+        background: white;
+        padding: 10px;
+
+        input {
+            width: 100%;
+            border: 1px solid lightgrey;
+            border-radius: 3px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+    }
+
+    &-menu {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding: 10px;
+        z-index: 1;
+    }
+
     &__button{
         cursor: pointer;
         background: #5E6BF6;

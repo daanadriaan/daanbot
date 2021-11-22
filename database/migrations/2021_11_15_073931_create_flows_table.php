@@ -20,16 +20,6 @@ class CreateFlowsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('types', function (Blueprint $table) {
-            $table->integer('flow_id')->nullable();
-            $table->float('x')->nullable();
-            $table->float('y')->nullable();
-        });
-
-        Schema::table('options', function (Blueprint $table) {
-            $table->float('x')->nullable();
-            $table->float('y')->nullable();
-        });
     }
 
     /**

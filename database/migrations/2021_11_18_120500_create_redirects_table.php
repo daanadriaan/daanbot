@@ -14,11 +14,9 @@ class CreateRedirectsTable extends Migration
     public function up()
     {
         Schema::create('redirects', function (Blueprint $table){
-            $table->integer('option_id')->nullable()->index();
-            $table->integer('type_id')->nullable()->index();
-        });
-        Schema::create('options', function (Blueprint $table){
-            $table->dropColumn('redirect_to');
+            $table->integer('from')->nullable()->index();
+            $table->integer('to')->nullable()->index();
+            $table->json('meta')->nullable();
         });
     }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Flow;
 use App\Models\Option;
+use App\Models\Step;
+use App\Models\Steps\Response;
 use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -26,23 +28,15 @@ class MakerController extends Controller
         return response()->json($flow);
     }
     public function newChat(Request $request, Flow $flow){
-        $chat = new Type;
+        $chat = new Step;
         $chat->flow_id = $flow->id;
         $chat->x = $request->x;
         $chat->y = $request->y;
+        $chat->type = $request->type;
         $chat->label = $request->label;
         //$chat->content = $request->content;
         $chat->save();
 
         return $chat;
     }
-    public function newOption(Request $request, Flow $flow){
-        $option = new Option;
-        $option->x = $request->x;
-        $option->y = $request->y;
-        $option->save();
-
-        return $option;
-    }
-
 }

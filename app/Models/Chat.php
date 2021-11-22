@@ -1,10 +1,8 @@
 <?php
 namespace App\Models;
 
+use App\Models\Steps\Response;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 
 class Chat extends Model
 {
@@ -15,11 +13,14 @@ class Chat extends Model
         return $this->belongsTo(Conversation::class);
     }
 
-    public function type(){
-        return $this->belongsTo(Type::class);
+    public function response(){
+        return $this->belongsTo(Response::class, 'type_id');
     }
 
     public function getOptionsAttribute(){
-        return optional($this->type)->options;
+        return optional($this->response)->options;
+    }
+    public function getContentAttribute(){
+        return optional($this->response)->content;
     }
 }

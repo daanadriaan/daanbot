@@ -2129,8 +2129,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['chat'],
@@ -29482,9 +29480,10 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "daanbot__cloud__ball" }),
         _vm._v(" "),
-        _c("div", { staticClass: "daanbot__cloud__container" }, [
-          _vm._v("\n            " + _vm._s(_vm.chat.content) + "\n        "),
-        ]),
+        _c("div", {
+          staticClass: "daanbot__cloud__container",
+          domProps: { innerHTML: _vm._s(_vm.chat.content) },
+        }),
       ]
     ),
   ])
@@ -29542,9 +29541,7 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                " +
-                    _vm._s(option.pivot.label) +
-                    "\n            "
+                  "\n                " + _vm._s(option.label) + "\n            "
                 ),
               ]
             )

@@ -7,9 +7,7 @@
             <div class="daanbot__cloud__ball"></div>
             <div class="daanbot__cloud__ball"></div>
             <div class="daanbot__cloud__ball"></div>
-            <div class="daanbot__cloud__container">
-                {{ chat.content }}
-            </div>
+            <div class="daanbot__cloud__container" v-html="chat.content"></div>
         </div>
     </div>
 </template>

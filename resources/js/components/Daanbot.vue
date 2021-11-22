@@ -10,7 +10,7 @@
                 <div class="daanbot__option daanbot__box"
                      v-for="option in options"
                      @click="chooseOption(option)">
-                    {{ option.pivot.label }}
+                    {{ option.label }}
                 </div>
             </div>
         </div>
