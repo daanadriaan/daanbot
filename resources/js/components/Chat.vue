@@ -1,5 +1,5 @@
 <template>
-    <div class="daanbot__chat">
+    <div class="daanbot__chat" :class="{'daanbot__chat--user': chat.user_input}">
         <div class="daanbot__avatar">
             <avatar></avatar>
         </div>
@@ -27,8 +27,9 @@ export default {
     },
     created(){
         setTimeout(timer => {
+            this.$emit('ready');
             this.loading = false;
-        }, 600)
+        }, this.chat.delay ? this.chat.delay : 2000)
     }
 }
 </script>

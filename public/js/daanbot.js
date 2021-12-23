@@ -2144,8 +2144,10 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     setTimeout(function (timer) {
+      _this.$emit('ready');
+
       _this.loading = false;
-    }, 600);
+    }, this.chat.delay ? this.chat.delay : 2000);
   }
 });
 
@@ -2185,6 +2187,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2201,7 +2220,10 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
     return {
       loading: true,
       chats: [],
-      options: []
+      options: [],
+      typing: true,
+      message: '',
+      placeholder: 'Typ hier je vraag..'
     };
   },
   created: function created() {
@@ -2212,25 +2234,85 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/conversation').then(function (response) {
-        console.log(response.data);
         _this.loading = false;
-        _this.chats = _this.chats.concat(response.data.chats);
-        _this.options = _this.chats[_this.chats.length - 1].options;
+
+        _this.appendChats(response, 0);
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    chooseOption: function chooseOption(option) {
+    appendChats: function appendChats(response) {
       var _this2 = this;
 
+      var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
+      setTimeout(function (timer) {
+        _this2.chats = _this2.chats.concat(response.data.chats);
+
+        if (delay === 0) {
+          _this2.chats = _this2.chats.map(function (item) {
+            item.delay = 1;
+            return item;
+          });
+        }
+
+        setTimeout(function (timer) {
+          _this2.options = _this2.chats[_this2.chats.length - 1].options;
+        }, delay);
+
+        _this2.scrollToEnd();
+      }, delay);
+    },
+    chooseOption: function chooseOption(option) {
+      var _this3 = this;
+
+      option.user_input = true;
+      this.options = [];
+      this.chats.push(option);
+      this.scrollToEnd();
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/choose', {
         'option': option.id
       }).then(function (response) {
-        _this2.chats = _this2.chats.concat(response.data.chats);
-        _this2.options = _this2.chats[_this2.chats.length - 1].options;
+        _this3.appendChats(response);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    askQuestion: function askQuestion() {
+      var _this4 = this;
+
+      if (this.message.length < 3) return;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/interpret', {
+        'message': this.message
+      }).then(function (response) {
+        _this4.appendChats(response);
+
+        _this4.message = '';
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    enter: function enter(event) {
+      // If key is arrow.. navigate;
+      if (event.key && event.key.includes('Arrow')) {
+        if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+          //this.navigate(event);
+          event.preventDefault();
+        }
+
+        return;
+      } else if (event.key && event.key.includes('Enter')) {
+        this.askQuestion();
+        event.preventDefault();
+        return;
+      }
+    },
+    scrollToEnd: function scrollToEnd() {
+      setTimeout(function (timer) {
+        window.scroll({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
     }
   }
 });
@@ -5243,7 +5325,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.daanbot__container {\n  display: flex;\n  max-height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  height: 100%;\n  flex: 1;\n  padding-left: 100px;\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 30px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat .daanbot__cloud.daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat .daanbot__cloud.daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat .daanbot__cloud.daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__bottom {\n  flex: none;\n  display: flex;\n  padding-top: 30px;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 30px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n  display: flex;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n  margin-bottom: 10px;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 30px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29464,29 +29546,36 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "daanbot__chat" }, [
-    _c("div", { staticClass: "daanbot__avatar" }, [_c("avatar")], 1),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "daanbot__cloud",
-        class: { "daanbot__cloud--loading": _vm.loading },
-      },
-      [
-        _c("div", { staticClass: "daanbot__cloud__ball" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "daanbot__cloud__ball" }),
-        _vm._v(" "),
-        _c("div", { staticClass: "daanbot__cloud__ball" }),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "daanbot__cloud__container",
-          domProps: { innerHTML: _vm._s(_vm.chat.content) },
-        }),
-      ]
-    ),
-  ])
+  return _c(
+    "div",
+    {
+      staticClass: "daanbot__chat",
+      class: { "daanbot__chat--user": _vm.chat.user_input },
+    },
+    [
+      _c("div", { staticClass: "daanbot__avatar" }, [_c("avatar")], 1),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "daanbot__cloud",
+          class: { "daanbot__cloud--loading": _vm.loading },
+        },
+        [
+          _c("div", { staticClass: "daanbot__cloud__ball" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "daanbot__cloud__ball" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "daanbot__cloud__ball" }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "daanbot__cloud__container",
+            domProps: { innerHTML: _vm._s(_vm.chat.content) },
+          }),
+        ]
+      ),
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -29520,14 +29609,20 @@ var render = function () {
           "div",
           { staticClass: "daanbot__chats" },
           _vm._l(_vm.chats, function (chat) {
-            return _c("chat", { key: chat.id, attrs: { chat: chat } })
+            return _c("chat", {
+              key: "chat" + chat.id,
+              ref: "chat",
+              refInFor: true,
+              attrs: { chat: chat },
+              on: { ready: _vm.scrollToEnd },
+            })
           }),
           1
         ),
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "daanbot__bottom" },
+          { staticClass: "daanbot__options" },
           _vm._l(_vm.options, function (option) {
             return _c(
               "div",
@@ -29548,6 +29643,71 @@ var render = function () {
           }),
           0
         ),
+        _vm._v(" "),
+        _c("div", { staticClass: "daanbot__bottom" }, [
+          _c("div", { staticClass: "daanbot__bottom__textarea" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.message,
+                  expression: "message",
+                },
+              ],
+              attrs: { disabled: !_vm.typing, placeholder: _vm.placeholder },
+              domProps: { value: _vm.message },
+              on: {
+                keypress: _vm.enter,
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.message = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c("button", { on: { click: _vm.askQuestion } }, [
+              _c(
+                "svg",
+                {
+                  attrs: {
+                    width: "43px",
+                    height: "39px",
+                    viewBox: "0 0 43 39",
+                    version: "1.1",
+                    xmlns: "http://www.w3.org/2000/svg",
+                    "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                  },
+                },
+                [
+                  _c(
+                    "g",
+                    {
+                      attrs: {
+                        id: "Artboard-2",
+                        stroke: "none",
+                        "stroke-width": "1",
+                        fill: "none",
+                        "fill-rule": "evenodd",
+                      },
+                    },
+                    [
+                      _c("path", {
+                        attrs: {
+                          d: "M5.84253488,2.191555 L38.893123,17.6901217 C39.8931944,18.1590899 40.3237386,19.3499816 39.8547705,20.350053 C39.6418497,20.8041051 39.2661191,21.1615969 38.8020423,21.3516793 L5.84879589,34.8490893 C4.8266448,35.2677549 3.65863205,34.7785333 3.23996641,33.7563822 C3.05750331,33.3109078 3.04183861,32.814568 3.19584781,32.3584743 L6.55199013,22.4193586 C6.79807151,21.690596 7.44028425,21.1675335 8.20376919,21.0740357 L15.6898279,20.1572781 C16.2005213,20.0947376 16.563821,19.6300397 16.5012804,19.1193463 C16.4479363,18.6837488 16.0978189,18.3444484 15.6607623,18.3047963 L8.30152752,17.6371271 C7.4878691,17.5633076 6.8009141,17.0020118 6.56640033,16.2193927 L3.07755727,4.57642929 C2.7604989,3.51834245 3.36122117,2.40356699 4.41930802,2.08650863 C4.89049321,1.94531681 5.39718504,1.98271502 5.84253488,2.191555 Z",
+                          id: "Path-4",
+                          fill: "#FFFFFF",
+                        },
+                      }),
+                    ]
+                  ),
+                ]
+              ),
+            ]),
+          ]),
+        ]),
       ]),
     ]
   )
@@ -41723,7 +41883,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","/Library/WebServer/Documents/daanbot"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/Library/WebServer/Documents/daanbot","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

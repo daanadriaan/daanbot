@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chat extends Model
 {
     public $appends = ['options'];
-    protected $visible = ['content', 'options'];
+    protected $visible = ['content', 'options', 'user_input'];
 
     public function conversation(){
         return $this->belongsTo(Conversation::class);
@@ -20,7 +20,8 @@ class Chat extends Model
     public function getOptionsAttribute(){
         return optional($this->response)->options;
     }
-    public function getContentAttribute(){
-        return optional($this->response)->content;
+
+    public function scopeLastQuestion($query){
+        return $query->orderByDesc('id')->whereUserInput(false);
     }
 }

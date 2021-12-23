@@ -19,6 +19,10 @@ class Flow extends Model
         return $this->belongsTo(Response::class, 'type_id');
     }
 
+    public function redirectedFrom(){
+        return $this->hasMany(Step::class, 'redirect_flow_id');
+    }
+
     public function toNodes(){
         $flow =  [
             'centerX' =>  optional($this->meta)->centerX ?? 300,

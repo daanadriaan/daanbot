@@ -32,6 +32,7 @@
         "vue-i18n": "v6.0.0-alpha.5",
         "vue-loader": "^15",
         "vue-router": "^3.2.0",
+        "vue-select": "^3.16.0",
         "vue-simple-flowchart": "^0.1.8",
         "vue-template-compiler": "^2.6.12"
     }

@@ -14,10 +14,11 @@ use App\Http\Controllers\BotController;
 |
 */
 
-Route::middleware('session')->group(function(){
+Route::middleware(['session', 'throttle:10'])->group(function(){
     Route::get('/', [BotController::class, 'get']);
     Route::get('/conversation', [BotController::class, 'conversation']);
     Route::post('/conversation/choose', [BotController::class, 'choose']);
+    Route::post('/conversation/interpret', [BotController::class, 'interpret']);
 });
 
 Route::middleware('auth')->group(function(){

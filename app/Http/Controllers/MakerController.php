@@ -28,12 +28,14 @@ class MakerController extends Controller
         return response()->json($flow);
     }
     public function newChat(Request $request, Flow $flow){
+
         $chat = new Step;
         $chat->flow_id = $flow->id;
         $chat->x = $request->x;
         $chat->y = $request->y;
         $chat->type = $request->type;
         $chat->label = $request->label;
+        $chat->redirect_flow_id =optional($request->redirect)->id;
         //$chat->content = $request->content;
         $chat->save();
 

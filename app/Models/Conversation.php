@@ -40,20 +40,54 @@ class Conversation extends Model
         $flow = Flow::first();
         $type = $flow->start;
 
-        $conversation->createChatFromType($type);
+        $conversation->createChatFromResponse($type);
 
         $conversation->load('chats');
 
         return $conversation;
     }
 
-    public function createChatFromType($type){
+    public function createChatFromResponse($response){
         $chat = new Chat;
         $chat->conversation_id = $this->id;
-        $chat->content = $type->content;
-        $chat->type_id = $type->id;
+        $chat->content = $response->content;
+        $chat->type_id = $response->id;
         $chat->save();
 
         return $chat;
+    }
+
+    public function createChatFromOption($option){
+        $chat = new Chat;
+        $chat->user_input = true;
+        $chat->conversation_id = $this->id;
+        $chat->content = $option->content;
+        $chat->save();
+
+        return $chat;
+    }
+
+    public function interpretMessage($message){
+
+        // Get last question
+        $last = optional($this->chats()->lastQuestion()->first())->response;
+
+        $chat = new Chat;
+        $chat->user_input = true;
+        $chat->conversation_id = $this->id;
+        $chat->content = $message;
+        $chat->save();
+
+        if($last){
+            $response = new Chat;
+            $response->conversation_id = $this->id;
+            $response->content = 'Ja.. dit is awkward. Ik ben een behoorlijk domme bot en ik kan nog helemaal geen tekst interpreteren. Ik kan wel, de bovenstaande vraag nog en keer stellen :-)';
+            $response->save();
+
+            // Repeat question
+            $repeat = $this->createChatFromResponse($last);
+        }
+
+        return [$chat, $response, $repeat];
     }
 }
