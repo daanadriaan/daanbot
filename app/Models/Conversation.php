@@ -68,7 +68,6 @@ class Conversation extends Model
     }
 
     public function interpretMessage($message){
-
         // Get last question
         $last = optional($this->chats()->lastQuestion()->first())->response;
 
@@ -88,6 +87,9 @@ class Conversation extends Model
             $repeat = $this->createChatFromResponse($last);
         }
 
-        return [$chat, $response, $repeat];
+        return [
+            'chat' => $chat,
+            'responses' => [$response, $repeat]
+        ];
     }
 }

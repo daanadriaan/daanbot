@@ -43,7 +43,7 @@ class BotController extends Controller
 
         $chats = $request->conversation->interpretMessage($request->message);
 
-        return response()->json(['chats' => $chats]);
+        return response()->json($chats);
 
 //        return response()->json('Error', 422);
     }

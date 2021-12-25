@@ -65,15 +65,15 @@ export default {
             axios.get('/conversation')
                 .then(response => {
                     this.loading = false;
-                    this.appendChats(response, 0);
+                    this.appendChats(response.data.chats, 0);
 
                 }).catch(error => {
                     console.log(error);
                 });
         },
-        appendChats(response, delay = 1000){
+        appendChats(chats, delay = 1000){
             setTimeout(timer => {
-                this.chats = this.chats.concat(response.data.chats);
+                this.chats = this.chats.concat(chats);
                 if(delay === 0){
                     this.chats = this.chats.map(item => {item.delay = 1; return item;});
                 }
@@ -92,7 +92,7 @@ export default {
 
             axios.post('/conversation/choose', {'option': option.id})
                 .then(response => {
-                    this.appendChats(response);
+                    this.appendChats(response.data.chats);
                 }).catch(error => {
                     console.log(error);
                 });
@@ -101,7 +101,9 @@ export default {
             if(this.message.length < 3) return;
             axios.post('/conversation/interpret', {'message': this.message})
                 .then(response => {
-                    this.appendChats(response);
+                    console.log(response);
+                    this.appendChats(response.data.chat, 0);
+                    this.appendChats(response.data.responses, 3000);
                     this.message = '';
                 }).catch(error => {
                     console.log(error);

@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="app">
-        <navigation></navigation>
+        <navigation @new-flow="newFlow"></navigation>
         <router-view :key="$route.params.id"></router-view>
     </div>
     <script src="/js/tinymce/tinymce.min.js"></script>

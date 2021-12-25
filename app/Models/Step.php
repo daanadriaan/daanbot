@@ -36,6 +36,7 @@ class Step extends Model
             'redirect' => $this->redirect,
             'x' => $this->x,
             'y' => $this->y,
+            'class' => 'blue',
         ];
     }
 

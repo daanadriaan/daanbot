@@ -202,6 +202,13 @@ export default {
 .flowchart-container, .flowchart-container svg{
     height: 100vh;
 }
+
+.flowchart-node{
+    &.blue{
+        background: blue !important;
+    }
+}
+
 .botmaker {
     position: relative;
 

@@ -2236,17 +2236,17 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/conversation').then(function (response) {
         _this.loading = false;
 
-        _this.appendChats(response, 0);
+        _this.appendChats(response.data.chats, 0);
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    appendChats: function appendChats(response) {
+    appendChats: function appendChats(chats) {
       var _this2 = this;
 
       var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1000;
       setTimeout(function (timer) {
-        _this2.chats = _this2.chats.concat(response.data.chats);
+        _this2.chats = _this2.chats.concat(chats);
 
         if (delay === 0) {
           _this2.chats = _this2.chats.map(function (item) {
@@ -2272,7 +2272,7 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/choose', {
         'option': option.id
       }).then(function (response) {
-        _this3.appendChats(response);
+        _this3.appendChats(response.data.chats);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2284,7 +2284,11 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/interpret', {
         'message': this.message
       }).then(function (response) {
-        _this4.appendChats(response);
+        console.log(response);
+
+        _this4.appendChats(response.data.chat, 0);
+
+        _this4.appendChats(response.data.responses, 3000);
 
         _this4.message = '';
       })["catch"](function (error) {

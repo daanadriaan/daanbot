@@ -4,7 +4,7 @@ require('./bootstrap');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Botmaker from './components/Botmaker';
+import Botmaker from './components/Botmaker'
 import Navigation from './components/Navigation'
 
 Vue.use(VueRouter);
@@ -41,7 +41,10 @@ new Vue({
         Botmaker, Navigation
     },
     methods:{
-
+        newFlow(flow){
+            this.flows.push(flow);
+            this.$router.push({name: 'maker', params:{id: flow.id}});
+        }
     },
     router: vueRouter
 });
