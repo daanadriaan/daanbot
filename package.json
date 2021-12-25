@@ -35,5 +35,8 @@
         "vue-select": "^3.16.0",
         "vue-simple-flowchart": "git+https://github.com/daanadriaan/vue-simple-flowchart.git",
         "vue-template-compiler": "^2.6.12"
+    },
+    "dependencies": {
+        "cross-env": "^7.0.3"
     }
 }
