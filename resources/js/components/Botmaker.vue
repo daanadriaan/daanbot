@@ -203,9 +203,40 @@ export default {
     height: 100vh;
 }
 
+$colors:(
+    'blue':blue
+);
+
 .flowchart-node{
-    &.blue{
-        background: blue !important;
+    @each $name, $color in $colors {
+        &.#{$name} {
+            border: 1px solid $color !important;
+            border-radius: 5px;
+
+            &.selected {
+                box-shadow: 0 0 0 2px $color;
+            }
+
+            .node-type {
+                border-radius: 5px 5px 0 0;
+                background: $color !important;
+            }
+
+            .node-delete {
+                border: 1px solid $color;
+                border-radius: 100px;
+                color: $color;
+                height: 18px;
+                width: 18px;
+                top: -5px;
+
+                &:hover {
+                    background: $color;
+                    border-radius: 100px;
+                    color: white;
+                }
+            }
+        }
     }
 }
 

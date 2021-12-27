@@ -996,6 +996,7 @@ module.exports = function transformData(data, headers, fns) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 
 
 var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
@@ -2257,7 +2258,7 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
 
         setTimeout(function (timer) {
           _this2.options = _this2.chats[_this2.chats.length - 1].options;
-        }, delay);
+        }, delay ? delay + 1000 : 0);
 
         _this2.scrollToEnd();
       }, delay);
@@ -2284,8 +2285,6 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/interpret', {
         'message': this.message
       }).then(function (response) {
-        console.log(response);
-
         _this4.appendChats(response.data.chat, 0);
 
         _this4.appendChats(response.data.responses, 3000);
@@ -2424,7 +2423,7 @@ new vue__WEBPACK_IMPORTED_MODULE_3__["default"]({
 /***/ ((module, exports, __webpack_require__) => {
 
 /* module decorator */ module = __webpack_require__.nmd(module);
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 /*!
  * Pusher JavaScript Library v7.0.1
@@ -5329,7 +5328,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 30px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n  display: flex;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n  margin-bottom: 10px;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 30px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 30px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n  display: flex;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n  margin-bottom: 10px;\n  opacity: 0;\n  -webkit-animation: fadeIn 500ms;\n          animation: fadeIn 500ms;\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n.daanbot__option:nth-child(2) {\n  -webkit-animation-delay: 100ms;\n          animation-delay: 100ms;\n}\n.daanbot__option:nth-child(3) {\n  -webkit-animation-delay: 200ms;\n          animation-delay: 200ms;\n}\n.daanbot__option:nth-child(4) {\n  -webkit-animation-delay: 300ms;\n          animation-delay: 300ms;\n}\n.daanbot__option:nth-child(5) {\n  -webkit-animation-delay: 400ms;\n          animation-delay: 400ms;\n}\n.daanbot__option:nth-child(6) {\n  -webkit-animation-delay: 500ms;\n          animation-delay: 500ms;\n}\n.daanbot__option:nth-child(7) {\n  -webkit-animation-delay: 600ms;\n          animation-delay: 600ms;\n}\n.daanbot__option:nth-child(8) {\n  -webkit-animation-delay: 700ms;\n          animation-delay: 700ms;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 30px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -24221,6 +24220,200 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
 /***/ "./node_modules/pusher-js/dist/web/pusher.js":
 /*!***************************************************!*\
   !*** ./node_modules/pusher-js/dist/web/pusher.js ***!
@@ -24941,7 +25134,7 @@ var buildLogSuffix = function (key) {
 /* harmony default export */ var url_store = ({ buildLogSuffix: buildLogSuffix });
 
 // CONCATENATED MODULE: ./src/core/errors.ts
-var __extends = (undefined && undefined.__extends) || (function () {
+var __extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25152,7 +25345,7 @@ var Timer = (function () {
 /* harmony default export */ var abstract_timer = (Timer);
 
 // CONCATENATED MODULE: ./src/core/utils/timers/index.ts
-var timers_extends = (undefined && undefined.__extends) || (function () {
+var timers_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -25781,7 +25974,7 @@ var dispatcher_Dispatcher = (function () {
 /* harmony default export */ var dispatcher = (dispatcher_Dispatcher);
 
 // CONCATENATED MODULE: ./src/core/transports/transport_connection.ts
-var transport_connection_extends = (undefined && undefined.__extends) || (function () {
+var transport_connection_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26060,7 +26253,7 @@ transports.sockjs = SockJSTransport;
 /* harmony default export */ var transports_transports = (transports);
 
 // CONCATENATED MODULE: ./src/runtimes/web/net_info.ts
-var net_info_extends = (undefined && undefined.__extends) || (function () {
+var net_info_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26242,7 +26435,7 @@ var Protocol = {
 /* harmony default export */ var protocol_protocol = (Protocol);
 
 // CONCATENATED MODULE: ./src/core/connection/connection.ts
-var connection_extends = (undefined && undefined.__extends) || (function () {
+var connection_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26478,7 +26671,7 @@ var timeline_sender_TimelineSender = (function () {
 /* harmony default export */ var timeline_sender = (timeline_sender_TimelineSender);
 
 // CONCATENATED MODULE: ./src/core/channels/channel.ts
-var channel_extends = (undefined && undefined.__extends) || (function () {
+var channel_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26589,7 +26782,7 @@ var channel_Channel = (function (_super) {
 /* harmony default export */ var channels_channel = (channel_Channel);
 
 // CONCATENATED MODULE: ./src/core/channels/private_channel.ts
-var private_channel_extends = (undefined && undefined.__extends) || (function () {
+var private_channel_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26674,7 +26867,7 @@ var members_Members = (function () {
 /* harmony default export */ var members = (members_Members);
 
 // CONCATENATED MODULE: ./src/core/channels/presence_channel.ts
-var presence_channel_extends = (undefined && undefined.__extends) || (function () {
+var presence_channel_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26775,7 +26968,7 @@ var utf8 = __nested_webpack_require_20171__(1);
 var base64 = __nested_webpack_require_20171__(0);
 
 // CONCATENATED MODULE: ./src/core/channels/encrypted_channel.ts
-var encrypted_channel_extends = (undefined && undefined.__extends) || (function () {
+var encrypted_channel_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -26886,7 +27079,7 @@ var encrypted_channel_EncryptedChannel = (function (_super) {
 /* harmony default export */ var encrypted_channel = (encrypted_channel_EncryptedChannel);
 
 // CONCATENATED MODULE: ./src/core/connection/connection_manager.ts
-var connection_manager_extends = (undefined && undefined.__extends) || (function () {
+var connection_manager_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -27785,7 +27978,7 @@ var http_xdomain_request_hooks = {
 /* harmony default export */ var http_xdomain_request = (http_xdomain_request_hooks);
 
 // CONCATENATED MODULE: ./src/core/http/http_request.ts
-var http_request_extends = (undefined && undefined.__extends) || (function () {
+var http_request_extends = ( false) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -41887,7 +42080,7 @@ Vue.compile = compileToFunctions;
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","/Library/WebServer/Documents/daanbot"]],"_development":true,"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/Library/WebServer/Documents/daanbot","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"axios@^0.21","name":"axios","escapedName":"axios","rawSpec":"^0.21","saveSpec":null,"fetchSpec":"^0.21"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_shasum":"c67b90dc0568e5c1cf2b0b858c43ba28e2eda575","_spec":"axios@^0.21","_where":"/Library/WebServer/Documents/daanbot","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"deprecated":false,"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

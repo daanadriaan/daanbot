@@ -79,7 +79,7 @@ export default {
                 }
                 setTimeout(timer => {
                     this.options = this.chats[this.chats.length - 1].options;
-                }, delay);
+                }, delay ? delay + 1000 : 0);
                 this.scrollToEnd();
             }, delay);
         },
@@ -101,7 +101,6 @@ export default {
             if(this.message.length < 3) return;
             axios.post('/conversation/interpret', {'message': this.message})
                 .then(response => {
-                    console.log(response);
                     this.appendChats(response.data.chat, 0);
                     this.appendChats(response.data.responses, 3000);
                     this.message = '';

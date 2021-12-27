@@ -48,6 +48,7 @@ class Step extends Model
             $step->flow_id = $flow->id;
         }
 
+
         $step->label = $node['label'];
         $step->type = $node['type'];
         $step->x = $node['x'];
