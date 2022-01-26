@@ -14,7 +14,7 @@ class AddMetaToFlowsTable extends Migration
     public function up()
     {
         Schema::table('flows', function (Blueprint $table) {
-            $table->json('meta')->nullable();
+            $table->json('meta')->default('{"scale": 1, "centerX": 437, "centerY": 288}')->nullable();
         });
     }
 
