@@ -4,8 +4,8 @@
             <div class="daanbot__chats">
                 <chat :ref="'chat'"
                       @ready="scrollToEnd"
-                      :key="'chat'+chat.id"
-                      v-for="chat in chats"
+                      :key="'chat'+chat.id+'-'+index"
+                      v-for="(chat, index) in chats"
                       :chat="chat"/>
             </div>
             <div class="daanbot__options">
@@ -98,10 +98,16 @@ export default {
                 });
         },
         askQuestion(){
-            if(this.message.length < 3) return;
+            if(this.message.length < 1) return;
+
+            this.appendChats([{
+                content: '<p>'+this.message+'</p>',
+                user_input: true
+            }], 0);
+
             axios.post('/conversation/interpret', {'message': this.message})
                 .then(response => {
-                    this.appendChats(response.data.chat, 0);
+                    //this.appendChats([response.data.chat], 0);
                     this.appendChats(response.data.responses, 3000);
                     this.message = '';
                 }).catch(error => {

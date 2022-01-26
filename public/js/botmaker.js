@@ -2550,6 +2550,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2905,7 +2906,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".flowchart-container, .flowchart-container svg {\n  height: 100vh;\n}\n.flowchart-node.blue {\n  border: 1px solid blue !important;\n  border-radius: 5px;\n}\n.flowchart-node.blue.selected {\n  box-shadow: 0 0 0 2px blue;\n}\n.flowchart-node.blue .node-type {\n  border-radius: 5px 5px 0 0;\n  background: blue !important;\n}\n.flowchart-node.blue .node-delete {\n  border: 1px solid blue;\n  border-radius: 100px;\n  color: blue;\n  height: 18px;\n  width: 18px;\n  top: -5px;\n}\n.flowchart-node.blue .node-delete:hover {\n  background: blue;\n  border-radius: 100px;\n  color: white;\n}\n.botmaker {\n  position: relative;\n}\n.botmaker-window {\n  z-index: 1;\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 500px;\n  height: 100%;\n  background: white;\n  padding: 10px;\n}\n.botmaker-window .form-control {\n  width: 100%;\n  border: 1px solid lightgrey;\n  border-radius: 3px;\n  padding: 5px 10px;\n  margin-bottom: 10px;\n}\n.botmaker-menu {\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  z-index: 1;\n}\n.botmaker__button {\n  position: relative;\n  cursor: pointer;\n  background: #5E6BF6;\n  color: white;\n  border-radius: 5px;\n  padding: 5px 15px;\n  margin-bottom: 10px;\n}\n.botmaker__button__dropdown {\n  background: white;\n  padding: 5px 10px;\n  min-width: 140px;\n  color: black;\n  border-radius: 4px;\n  position: absolute;\n  left: 120px;\n  top: 0;\n}\n.botmaker .v-select {\n  width: 200px;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".flowchart-container, .flowchart-container svg {\n  height: 100vh;\n}\n.flowchart-node {\n  border-radius: 5px;\n}\n.flowchart-node .node-type {\n  border-radius: 5px 5px 0 0;\n}\n.flowchart-node .node-delete {\n  border-radius: 100px;\n  height: 18px;\n  width: 18px;\n  top: -5px;\n}\n.flowchart-node .node-delete:hover {\n  border-radius: 100px;\n  color: white;\n}\n.flowchart-node.start .node-input {\n  display: none;\n}\n.flowchart-node.start .node-input {\n  display: none;\n}\n.flowchart-node.start.selected {\n  box-shadow: 0 0 0 2px #b979c9;\n}\n.flowchart-node.start .node-type {\n  background: #b979c9 !important;\n}\n.flowchart-node.start .node-delete {\n  border: 1px solid #b979c9;\n  color: #b979c9;\n}\n.flowchart-node.start .node-delete:hover {\n  background: #b979c9;\n}\n.flowchart-node.option.selected {\n  box-shadow: 0 0 0 2px #5ead97;\n}\n.flowchart-node.option .node-type {\n  background: #5ead97 !important;\n}\n.flowchart-node.option .node-delete {\n  border: 1px solid #5ead97;\n  color: #5ead97;\n}\n.flowchart-node.option .node-delete:hover {\n  background: #5ead97;\n}\n.flowchart-node.redirect.selected {\n  box-shadow: 0 0 0 2px #5e8fad;\n}\n.flowchart-node.redirect .node-type {\n  background: #5e8fad !important;\n}\n.flowchart-node.redirect .node-delete {\n  border: 1px solid #5e8fad;\n  color: #5e8fad;\n}\n.flowchart-node.redirect .node-delete:hover {\n  background: #5e8fad;\n}\n.flowchart-container > svg path {\n  stroke: #939b9f !important;\n}\n.botmaker {\n  position: relative;\n}\n.botmaker__grid {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: #FCFBFF;\n}\n.botmaker-window {\n  z-index: 1;\n  position: absolute;\n  top: 0;\n  right: 0;\n  width: 500px;\n  height: 100%;\n  background: white;\n  padding: 10px;\n}\n.botmaker-window .form-control {\n  width: 100%;\n  border: 1px solid lightgrey;\n  border-radius: 3px;\n  padding: 5px 10px;\n  margin-bottom: 10px;\n}\n.botmaker-menu {\n  position: absolute;\n  left: 0;\n  top: 0;\n  padding: 10px;\n  z-index: 1;\n}\n.botmaker__button {\n  position: relative;\n  cursor: pointer;\n  background: #5E6BF6;\n  color: white;\n  border-radius: 5px;\n  padding: 5px 15px;\n  margin-bottom: 10px;\n}\n.botmaker__button__dropdown {\n  background: white;\n  padding: 5px 10px;\n  min-width: 140px;\n  color: black;\n  border-radius: 4px;\n  position: absolute;\n  left: 120px;\n  top: 0;\n}\n.botmaker .v-select {\n  width: 200px;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -21059,6 +21060,8 @@ var render = function () {
     "div",
     { staticClass: "botmaker" },
     [
+      _c("div", { staticClass: "botmaker__grid" }),
+      _vm._v(" "),
       _c("div", { staticClass: "botmaker-menu" }, [
         _c(
           "div",

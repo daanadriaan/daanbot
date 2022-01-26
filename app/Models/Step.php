@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Step extends Model
 {
@@ -36,7 +37,7 @@ class Step extends Model
             'redirect' => $this->redirect,
             'x' => $this->x,
             'y' => $this->y,
-            'class' => 'blue',
+            'class' => Str::snake($this->type),
         ];
     }
 

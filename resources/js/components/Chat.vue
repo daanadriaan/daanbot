@@ -3,12 +3,19 @@
         <div class="daanbot__avatar">
             <avatar></avatar>
         </div>
-        <div class="daanbot__cloud" :class="{'daanbot__cloud--loading': loading}">
-            <div class="daanbot__cloud__ball"></div>
-            <div class="daanbot__cloud__ball"></div>
-            <div class="daanbot__cloud__ball"></div>
-            <div class="daanbot__cloud__container" v-html="chat.content"></div>
+        <div class="daanbot__clouds">
+            <div class="daanbot__cloud"
+                 :class="{'daanbot__cloud--loading': loading}"
+                 :key="'cloud'+chat.id+'-'+key"
+                 v-if="content.length > 0"
+                 v-for="(content, key) in contents">
+                <div class="daanbot__cloud__ball"></div>
+                <div class="daanbot__cloud__ball"></div>
+                <div class="daanbot__cloud__ball"></div>
+                <div class="daanbot__cloud__container" v-html="content"></div>
+            </div>
         </div>
+
     </div>
 </template>
 
@@ -23,6 +30,15 @@ export default {
     data() {
         return {
             loading: true,
+
+        }
+    },
+    computed:{
+        contents(){
+            var html = new DOMParser().parseFromString(this.chat.content, "text/html");
+            return Array.prototype.slice.call(html.getElementsByTagName('p')).map(p => {
+                p = p.innerHTML; return p;
+            });
         }
     },
     created(){

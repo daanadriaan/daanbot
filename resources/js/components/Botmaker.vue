@@ -1,5 +1,6 @@
 <template>
     <div class="botmaker">
+        <div class="botmaker__grid"></div>
         <div class="botmaker-menu">
             <div class="botmaker__button" @click="addStep('Response')">+ Chat</div>
             <div class="botmaker__button" @click="addStep('Option')">+ Option</div>
@@ -203,45 +204,82 @@ export default {
     height: 100vh;
 }
 
+$bg: #FCFBFF;
+
 $colors:(
-    'blue':blue
+    'start': #b979c9,
+    'option': #5ead97,
+    'redirect': #5e8fad,
 );
 
 .flowchart-node{
+    border-radius: 5px;
+
+    .node-type {
+        border-radius: 5px 5px 0 0;
+    }
+    .node-delete {
+        border-radius: 100px;
+        height: 18px;
+        width: 18px;
+        top: -5px;
+
+        &:hover {
+            border-radius: 100px;
+            color: white;
+        }
+    }
+
+    &.start{
+        .node-input{
+            display:none;
+        }
+    }
+    &.start{
+        .node-input{
+            display:none;
+        }
+    }
+
     @each $name, $color in $colors {
         &.#{$name} {
-            border: 1px solid $color !important;
-            border-radius: 5px;
+            //border: 1px solid $color !important;
 
             &.selected {
                 box-shadow: 0 0 0 2px $color;
             }
 
             .node-type {
-                border-radius: 5px 5px 0 0;
                 background: $color !important;
             }
 
             .node-delete {
                 border: 1px solid $color;
-                border-radius: 100px;
                 color: $color;
-                height: 18px;
-                width: 18px;
-                top: -5px;
 
                 &:hover {
                     background: $color;
-                    border-radius: 100px;
-                    color: white;
                 }
             }
         }
     }
 }
 
+.flowchart-container > svg path{
+    stroke: #939b9f !important;
+}
+
 .botmaker {
     position: relative;
+
+    &__grid{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width:100%;
+        height: 100%;
+        background: $bg;
+    }
 
     &-window {
         z-index: 1;

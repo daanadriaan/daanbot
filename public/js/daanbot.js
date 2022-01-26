@@ -2130,6 +2130,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['chat'],
@@ -2140,6 +2147,15 @@ __webpack_require__.r(__webpack_exports__);
     return {
       loading: true
     };
+  },
+  computed: {
+    contents: function contents() {
+      var html = new DOMParser().parseFromString(this.chat.content, "text/html");
+      return Array.prototype.slice.call(html.getElementsByTagName('p')).map(function (p) {
+        p = p.innerHTML;
+        return p;
+      });
+    }
   },
   created: function created() {
     var _this = this;
@@ -2281,12 +2297,15 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
     askQuestion: function askQuestion() {
       var _this4 = this;
 
-      if (this.message.length < 3) return;
+      if (this.message.length < 1) return;
+      this.appendChats([{
+        content: '<p>' + this.message + '</p>',
+        user_input: true
+      }], 0);
       axios__WEBPACK_IMPORTED_MODULE_0___default().post('/conversation/interpret', {
         'message': this.message
       }).then(function (response) {
-        _this4.appendChats(response.data.chat, 0);
-
+        //this.appendChats([response.data.chat], 0);
         _this4.appendChats(response.data.responses, 3000);
 
         _this4.message = '';
@@ -5328,7 +5347,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 30px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n  display: flex;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n  margin-bottom: 10px;\n  opacity: 0;\n  -webkit-animation: fadeIn 500ms;\n          animation: fadeIn 500ms;\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n.daanbot__option:nth-child(2) {\n  -webkit-animation-delay: 100ms;\n          animation-delay: 100ms;\n}\n.daanbot__option:nth-child(3) {\n  -webkit-animation-delay: 200ms;\n          animation-delay: 200ms;\n}\n.daanbot__option:nth-child(4) {\n  -webkit-animation-delay: 300ms;\n          animation-delay: 300ms;\n}\n.daanbot__option:nth-child(5) {\n  -webkit-animation-delay: 400ms;\n          animation-delay: 400ms;\n}\n.daanbot__option:nth-child(6) {\n  -webkit-animation-delay: 500ms;\n          animation-delay: 500ms;\n}\n.daanbot__option:nth-child(7) {\n  -webkit-animation-delay: 600ms;\n          animation-delay: 600ms;\n}\n.daanbot__option:nth-child(8) {\n  -webkit-animation-delay: 700ms;\n          animation-delay: 700ms;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 30px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 10px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  margin-bottom: 20px;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding: 15px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading:nth-child(n+2) {\n  display: none;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 30px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 30px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n  display: flex;\n}\n.daanbot__option {\n  background: #5E6BF6;\n  color: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  cursor: pointer;\n  margin-bottom: 10px;\n  opacity: 0;\n  -webkit-animation: fadeIn 500ms;\n          animation: fadeIn 500ms;\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n.daanbot__option:nth-child(2) {\n  -webkit-animation-delay: 100ms;\n          animation-delay: 100ms;\n}\n.daanbot__option:nth-child(3) {\n  -webkit-animation-delay: 200ms;\n          animation-delay: 200ms;\n}\n.daanbot__option:nth-child(4) {\n  -webkit-animation-delay: 300ms;\n          animation-delay: 300ms;\n}\n.daanbot__option:nth-child(5) {\n  -webkit-animation-delay: 400ms;\n          animation-delay: 400ms;\n}\n.daanbot__option:nth-child(6) {\n  -webkit-animation-delay: 500ms;\n          animation-delay: 500ms;\n}\n.daanbot__option:nth-child(7) {\n  -webkit-animation-delay: 600ms;\n          animation-delay: 600ms;\n}\n.daanbot__option:nth-child(8) {\n  -webkit-animation-delay: 700ms;\n          animation-delay: 700ms;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 30px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29754,22 +29773,32 @@ var render = function () {
       _vm._v(" "),
       _c(
         "div",
-        {
-          staticClass: "daanbot__cloud",
-          class: { "daanbot__cloud--loading": _vm.loading },
-        },
-        [
-          _c("div", { staticClass: "daanbot__cloud__ball" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "daanbot__cloud__ball" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "daanbot__cloud__ball" }),
-          _vm._v(" "),
-          _c("div", {
-            staticClass: "daanbot__cloud__container",
-            domProps: { innerHTML: _vm._s(_vm.chat.content) },
-          }),
-        ]
+        { staticClass: "daanbot__clouds" },
+        _vm._l(_vm.contents, function (content, key) {
+          return content.length > 0
+            ? _c(
+                "div",
+                {
+                  key: "cloud" + _vm.chat.id + "-" + key,
+                  staticClass: "daanbot__cloud",
+                  class: { "daanbot__cloud--loading": _vm.loading },
+                },
+                [
+                  _c("div", { staticClass: "daanbot__cloud__ball" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "daanbot__cloud__ball" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "daanbot__cloud__ball" }),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "daanbot__cloud__container",
+                    domProps: { innerHTML: _vm._s(content) },
+                  }),
+                ]
+              )
+            : _vm._e()
+        }),
+        0
       ),
     ]
   )
@@ -29805,9 +29834,9 @@ var render = function () {
         _c(
           "div",
           { staticClass: "daanbot__chats" },
-          _vm._l(_vm.chats, function (chat) {
+          _vm._l(_vm.chats, function (chat, index) {
             return _c("chat", {
-              key: "chat" + chat.id,
+              key: "chat" + chat.id + "-" + index,
               ref: "chat",
               refInFor: true,
               attrs: { chat: chat },

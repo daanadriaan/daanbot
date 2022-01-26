@@ -74,13 +74,13 @@ class Conversation extends Model
         $chat = new Chat;
         $chat->user_input = true;
         $chat->conversation_id = $this->id;
-        $chat->content = $message;
+        $chat->content = '<p>'.$message.'</p>';
         $chat->save();
 
         if($last){
             $response = new Chat;
             $response->conversation_id = $this->id;
-            $response->content = 'Ja.. dit is awkward. Ik ben een behoorlijk domme bot en ik kan nog helemaal geen tekst interpreteren. Ik kan wel, de bovenstaande vraag nog en keer stellen :-)';
+            $response->content = '<p>Ja.. dit is awkward. Ik ben een behoorlijk domme bot en ik kan nog helemaal geen tekst interpreteren. Ik kan wel, de bovenstaande vraag nog en keer stellen :-)</p>';
             $response->save();
 
             // Repeat question

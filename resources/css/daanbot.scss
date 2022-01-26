@@ -46,7 +46,7 @@ body{
 
     &__chat {
         position: relative;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
 
         .daanbot__avatar{
             position: absolute;
@@ -71,6 +71,7 @@ body{
 
         .daanbot__cloud {
             display: flex;
+            margin-bottom: 20px;
             width: fit-content;
             padding: 15px 30px;
             background: white;
@@ -108,6 +109,9 @@ body{
             }
             .daanbot__cloud__ball{
                 display: block;
+            }
+            &:nth-child(n+2){
+                display:none;
             }
         }
 
