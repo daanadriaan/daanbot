@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="navigation">
         <router-link class="cursor-pointer" replace :to="{name: 'maker', params:{id: flow.id}}" v-for="flow in $root.flows">
             <input v-model="flow.name" @change="update(flow)">
         </router-link>
@@ -8,6 +8,10 @@
 </template>
 
 <style lang="scss">
+.navigation{
+    position: relative;
+    z-index: 100;
+}
 .font-bold > input{
     font-weight:bold;
 }
