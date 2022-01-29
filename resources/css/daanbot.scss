@@ -100,17 +100,19 @@ body{
                     animation-delay:0.2s;
                 }
             }
+
         }
 
         &:not(.daanbot__chat--user) .daanbot__cloud--loading{
             padding: 20px 15px;
+
             .daanbot__cloud__container{
                 display: none;
             }
             .daanbot__cloud__ball{
                 display: block;
             }
-            &:nth-child(n+2){
+            + .daanbot__cloud--loading{
                 display:none;
             }
         }

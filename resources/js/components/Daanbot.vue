@@ -3,7 +3,8 @@
         <div class="daanbot__container">
             <div class="daanbot__chats">
                 <chat :ref="'chat'"
-                      @ready="scrollToEnd"
+                      @scroll="scrollToEnd"
+                      @ready="showOptions(chat)"
                       :key="'chat'+chat.id+'-'+index"
                       v-for="(chat, index) in chats"
                       :chat="chat"/>
@@ -77,9 +78,6 @@ export default {
                 if(delay === 0){
                     this.chats = this.chats.map(item => {item.delay = 1; return item;});
                 }
-                setTimeout(timer => {
-                    this.options = this.chats[this.chats.length - 1].options;
-                }, delay ? delay + 1000 : 0);
                 this.scrollToEnd();
             }, delay);
         },
@@ -132,6 +130,10 @@ export default {
             setTimeout(timer => {
                 window.scroll({ top: document.body.scrollHeight , behavior: 'smooth' });
             }, 100);
+        },
+        showOptions(chat){
+            this.options = chat.options;
+            this.scrollToEnd();
         }
     }
 }
