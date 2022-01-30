@@ -5,7 +5,11 @@
         </div>
         <div class="daanbot__clouds">
             <div class="daanbot__cloud"
-                 :class="{'daanbot__cloud--loading': ! ready[key]}"
+                 :class="{
+                    'daanbot__cloud--loading': ! ready[key],
+                    'daanbot__cloud--image': content.includes('<img'),
+                    'daanbot__cloud--video': content.includes('<iframe'),
+                    }"
                  :key="'cloud'+chat.id+'-'+key"
                  v-if="content.length > 0"
                  v-for="(content, key) in contents">

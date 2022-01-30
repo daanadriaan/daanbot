@@ -2590,6 +2590,10 @@ __webpack_require__(/*! vue-simple-flowchart/dist/vue-flowchart.css */ "./node_m
             title: 'Edit',
             items: 'undo redo | cut copy paste pastetext | selectall'
           },
+          insert: {
+            title: 'Insert',
+            items: 'image'
+          },
           format: {
             title: 'Format',
             items: 'bold italic underline strikethrough superscript subscript'
@@ -2605,8 +2609,8 @@ __webpack_require__(/*! vue-simple-flowchart/dist/vue-flowchart.css */ "./node_m
         autoresize_on_init: true,
         fontsize_formats: '15px 18px 20px',
         placeholder: 'Typ of plak jouw tekst in dit venster..',
-        plugins: ['placeholder', 'autoresize advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media nonbreaking save table contextmenu directionality', 'emoticons template paste'],
-        toolbar: 'undo | bold italic | bullist numlist | link hr | code'
+        plugins: ['placeholder', 'autoresize advlist autolink lists link image charmap print preview hr anchor pagebreak', 'searchreplace wordcount visualblocks visualchars code fullscreen', 'insertdatetime media codesample nonbreaking save table contextmenu directionality', 'emoticons template paste'],
+        toolbar: 'undo | bold italic | bullist numlist | link hr | image media | code'
       },
       dropdown: false
     };

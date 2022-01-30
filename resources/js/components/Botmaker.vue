@@ -74,6 +74,7 @@ export default {
                 //content_css:                 '/css/tinymce_content.css',
                 menu:                        {
                     edit:   {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+                    insert: {title: 'Insert', items: 'image'},
                     format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript'},
                     table:  {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
                 },
@@ -87,10 +88,10 @@ export default {
                     'placeholder',
                     'autoresize advlist autolink lists link image charmap print preview hr anchor pagebreak',
                     'searchreplace wordcount visualblocks visualchars code fullscreen',
-                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'insertdatetime media codesample nonbreaking save table contextmenu directionality',
                     'emoticons template paste'
                 ],
-                toolbar:                     'undo | bold italic | bullist numlist | link hr | code',
+                toolbar:                     'undo | bold italic | bullist numlist | link hr | image media | code',
             },
             dropdown: false,
         }
