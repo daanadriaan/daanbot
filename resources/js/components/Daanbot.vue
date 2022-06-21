@@ -1,22 +1,33 @@
 <template>
-    <div class="daanbot" :class="{'daanbot--loading': loading}">
+    <div class="daanbot" :class="{'daanbot--loading': loading, 'daanbot--welcome': welcome}">
         <div class="daanbot__container">
             <div class="daanbot__chats">
+                <div class="daanbot__welcome">
+                    <div class="daanbot__welcome__avatar">
+                        <img src="/img/daan.jpg">
+                    </div>
+                    <div class="daanbot__welcome__right">
+                        <h1>Daan Muilkens</h1>
+                        <h2>Freelance webdeveloper</h2>
+                        <button @click="start" class="daanbot__option" v-if="welcome">Contact</button>
+                    </div>
+                </div>
                 <chat :ref="'chat'"
+                      v-if="!welcome"
                       @scroll="scrollToEnd"
                       @ready="showOptions(chat)"
                       :key="'chat'+chat.id+'-'+index"
                       v-for="(chat, index) in chats"
                       :chat="chat"/>
             </div>
-            <div class="daanbot__options">
+            <div class="daanbot__options" >
                 <div class="daanbot__option daanbot__box"
                      v-for="option in options"
                      @click="chooseOption(option)">
                     {{ option.label }}
                 </div>
             </div>
-            <div class="daanbot__bottom">
+            <div class="daanbot__bottom" v-if="!welcome">
                 <div class="daanbot__bottom__textarea">
                     <textarea v-model="message"
                               :disabled="!typing"
@@ -51,6 +62,8 @@ export default {
     data() {
         return {
             loading: true,
+            welcome: true,
+
             chats:[],
             options:[],
             typing: true,
@@ -59,13 +72,14 @@ export default {
         }
     },
     created(){
-        this.get();
+        this.get(true);
     },
     methods: {
-        get(){
+        get(initial){
             axios.get('/conversation')
                 .then(response => {
                     this.loading = false;
+                    if(initial) this.checkInitial(response.data);
                     this.appendChats(response.data.chats, 0);
 
                 }).catch(error => {
@@ -134,6 +148,15 @@ export default {
         showOptions(chat){
             this.options = chat.options;
             this.scrollToEnd();
+        },
+        checkInitial(data){
+            if(data.chats.length > 1){
+                // Remove welcome
+                this.welcome = false;
+            }
+        },
+        start(){
+            this.welcome = false;
         }
     }
 }

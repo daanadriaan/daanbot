@@ -11,6 +11,16 @@ class Flow extends Model
         'meta' => 'object',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($flow) {
+            // Same code here
+            $flow->meta = '{"scale": 1, "centerX": 437, "centerY": 288}';
+        });
+    }
+
     public function steps(){
         return $this->hasMany(Step::class);
     }

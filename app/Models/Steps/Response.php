@@ -24,6 +24,7 @@ class Response extends Step
     public function options(): BelongsToMany
     {
         return $this->belongsToMany(Step::class, 'redirects', 'from', 'to')
-            ->where('type', 'Option');
+            ->where('type', 'Option')
+            ->orderBy('x');
     }
 }

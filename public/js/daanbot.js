@@ -2093,6 +2093,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['fields', 'post', 'force'],
   data: function data() {
@@ -2244,6 +2245,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2259,6 +2271,7 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
   data: function data() {
     return {
       loading: true,
+      welcome: true,
       chats: [],
       options: [],
       typing: true,
@@ -2267,14 +2280,15 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
     };
   },
   created: function created() {
-    this.get();
+    this.get(true);
   },
   methods: {
-    get: function get() {
+    get: function get(initial) {
       var _this = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/conversation').then(function (response) {
         _this.loading = false;
+        if (initial) _this.checkInitial(response.data);
 
         _this.appendChats(response.data.chats, 0);
       })["catch"](function (error) {
@@ -2358,6 +2372,15 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
     showOptions: function showOptions(chat) {
       this.options = chat.options;
       this.scrollToEnd();
+    },
+    checkInitial: function checkInitial(data) {
+      if (data.chats.length > 1) {
+        // Remove welcome
+        this.welcome = false;
+      }
+    },
+    start: function start() {
+      this.welcome = false;
     }
   }
 });
@@ -5369,8 +5392,9 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 10px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  margin-bottom: 20px;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n  padding: 15px 30px;\n}\n.daanbot__chat .daanbot__cloud--image {\n  padding: 0;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) {\n  padding: 0;\n  width: 100%;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) .daanbot__cloud__container {\n  width: 100%;\n  padding: 0;\n  position: relative;\n  padding-top: 56.2%;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) .daanbot__cloud__container iframe {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n.daanbot__chat .daanbot__cloud a {\n  color: #5E6BF6;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading + .daanbot__cloud--loading {\n  display: none;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 22px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 15px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n}\n.daanbot__option {\n  display: inline-block;\n  background: #5E6BF6;\n  color: white;\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  max-width: 300px;\n  text-align: center;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  vertical-align: top;\n  cursor: pointer;\n  margin-bottom: 10px;\n  opacity: 0;\n  -webkit-animation: fadeIn 500ms;\n          animation: fadeIn 500ms;\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n@media (max-width: 400px) {\n  .daanbot__option {\n    display: block;\n    max-width: 100vw;\n    margin-left: auto;\n    margin-right: auto;\n    text-align: center;\n  }\n}\n.daanbot__option:nth-child(2) {\n  -webkit-animation-delay: 100ms;\n          animation-delay: 100ms;\n}\n.daanbot__option:nth-child(3) {\n  -webkit-animation-delay: 200ms;\n          animation-delay: 200ms;\n}\n.daanbot__option:nth-child(4) {\n  -webkit-animation-delay: 300ms;\n          animation-delay: 300ms;\n}\n.daanbot__option:nth-child(5) {\n  -webkit-animation-delay: 400ms;\n          animation-delay: 400ms;\n}\n.daanbot__option:nth-child(6) {\n  -webkit-animation-delay: 500ms;\n          animation-delay: 500ms;\n}\n.daanbot__option:nth-child(7) {\n  -webkit-animation-delay: 600ms;\n          animation-delay: 600ms;\n}\n.daanbot__option:nth-child(8) {\n  -webkit-animation-delay: 700ms;\n          animation-delay: 700ms;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 8px;\n  margin-top: 20px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\n  background: #FCFBFF;\n}\n\n.daanbot {\n  width: 100vw;\n  height: 100vh;\n  background: #FCFBFF;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n@media (max-width: 500px) {\n  .daanbot {\n    align-items: unset;\n    justify-content: unset;\n  }\n}\n.daanbot__welcome {\n  display: flex;\n  align-items: center;\n  margin-left: -100px;\n  margin-bottom: 50px;\n}\n.daanbot__welcome__avatar {\n  border-radius: 50%;\n  border: 5px solid white;\n  overflow: hidden;\n  flex: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  transition: all 500ms ease;\n}\n.daanbot__welcome__avatar img {\n  width: 200px;\n  transition: all 500ms ease;\n}\n.daanbot__welcome__right {\n  display: flex;\n  flex-direction: column;\n  padding-left: 30px;\n  flex: 1;\n  justify-content: center;\n}\n.daanbot__welcome__right h1 {\n  transition: all 500ms ease;\n  font-family: \"Montserrat\", sans-serif;\n  font-size: 60px;\n  line-height: 1em;\n  font-weight: bolder;\n  margin: 0;\n  margin-left: -2px;\n  color: #3b4293;\n}\n.daanbot__welcome__right h2 {\n  transition: all 500ms ease;\n  font-family: \"Montserrat\", sans-serif;\n  font-size: 36px;\n  line-height: 1.2em;\n  font-weight: bolder;\n  margin: 0;\n  color: #5E6BF6;\n}\n.daanbot__welcome__right button {\n  font-size: 20px;\n  font-weight: bold;\n  padding: 10px 20px;\n  border-radius: 7px;\n  margin-top: 10px;\n  margin-bottom: -10px;\n  margin-left: 0;\n}\n@media (max-width: 720px) {\n  .daanbot__welcome__avatar img {\n    width: 120px;\n  }\n  .daanbot__welcome__right h1 {\n    font-size: 40px;\n  }\n  .daanbot__welcome__right h2 {\n    font-size: 24px;\n  }\n}\n@media (max-width: 499px) {\n  .daanbot__welcome {\n    display: block;\n    margin-left: -50px;\n  }\n  .daanbot__welcome__avatar {\n    margin: 0 auto;\n    margin-bottom: 20px;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n  }\n  .daanbot__welcome__right {\n    text-align: center;\n    padding: 0;\n  }\n  .daanbot__welcome__right h1 {\n    font-size: 30px;\n  }\n  .daanbot__welcome__right h2 {\n    font-size: 18px;\n  }\n  .daanbot__welcome__right button {\n    margin: 20px auto;\n  }\n}\n@media (min-width: 500px) {\n  .daanbot:not(.daanbot--welcome) .daanbot__welcome__avatar {\n    box-shadow: none;\n    border-width: 0;\n  }\n  .daanbot:not(.daanbot--welcome) .daanbot__welcome__avatar img {\n    width: 70px;\n  }\n  .daanbot:not(.daanbot--welcome) .daanbot__welcome__right h1 {\n    font-size: 30px;\n  }\n  .daanbot:not(.daanbot--welcome) .daanbot__welcome__right h2 {\n    font-size: 18px;\n  }\n}\n.daanbot__container {\n  display: flex;\n  height: 100%;\n  flex-direction: column;\n  width: 800px;\n  max-width: 100vw;\n  margin: 0 auto;\n  padding: 0 10px;\n}\n.daanbot__chats {\n  flex: 1;\n  padding-top: 20px;\n  padding-bottom: 30px;\n  display: flex;\n  padding-left: 100px;\n  flex-direction: column;\n  justify-content: end;\n}\n@media (max-width: 500px) {\n  .daanbot__chats {\n    padding-left: 50px;\n  }\n}\n.daanbot__chat {\n  position: relative;\n  margin-bottom: 10px;\n}\n.daanbot__chat .daanbot__avatar {\n  position: absolute;\n  left: 0;\n  transform: translateX(calc(-100% - 30px));\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  border-radius: 100%;\n}\n.daanbot__chat .daanbot__avatar svg, .daanbot__chat .daanbot__avatar img {\n  width: 70px;\n  height: 70px;\n}\n@media (max-width: 500px) {\n  .daanbot__chat .daanbot__avatar {\n    transform: translateX(calc(-100% - 10px));\n  }\n  .daanbot__chat .daanbot__avatar svg, .daanbot__chat .daanbot__avatar img {\n    width: 40px;\n    height: 40px;\n  }\n}\n.daanbot__chat .daanbot__cloud {\n  display: flex;\n  margin-bottom: 20px;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  overflow: hidden;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  border-radius: 30px 30px 30px 0px;\n  padding: 15px 30px;\n}\n.daanbot__chat .daanbot__cloud--image {\n  padding: 0;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) {\n  padding: 0;\n  width: 100%;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) .daanbot__cloud__container {\n  width: 100%;\n  padding: 0;\n  position: relative;\n  padding-top: 56.2%;\n}\n.daanbot__chat .daanbot__cloud--video:not(.daanbot__cloud--loading) .daanbot__cloud__container iframe {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n.daanbot__chat .daanbot__cloud a {\n  color: #5E6BF6;\n}\n.daanbot__chat .daanbot__cloud__ball {\n  display: none;\n  width: 6px;\n  height: 6px;\n  border-radius: 100%;\n  background: #5E6BF6;\n  margin-right: 4px;\n  -webkit-animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n          animation: sinus 1s 1 0s cubic-bezier(0, 0, 0.3642, 1);\n  -webkit-animation-iteration-count: infinite;\n          animation-iteration-count: infinite;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(2) {\n  -webkit-animation-delay: 0.1s;\n          animation-delay: 0.1s;\n}\n.daanbot__chat .daanbot__cloud__ball:nth-child(3) {\n  margin-right: 0;\n  -webkit-animation-delay: 0.2s;\n          animation-delay: 0.2s;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading {\n  padding: 20px 15px;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__container {\n  display: none;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading .daanbot__cloud__ball {\n  display: block;\n}\n.daanbot__chat:not(.daanbot__chat--user) .daanbot__cloud--loading + .daanbot__cloud--loading {\n  display: none;\n}\n.daanbot__chat--user .daanbot__avatar {\n  display: none;\n}\n.daanbot__chat--user .daanbot__cloud {\n  color: white;\n  margin-left: auto;\n  border-radius: 30px 30px 0px 30px;\n  background: #5E6BF6;\n}\n.daanbot__chat--user .daanbot__cloud p, .daanbot__chat--user .daanbot__cloud div, .daanbot__chat--user .daanbot__cloud a {\n  color: white;\n}\n.daanbot__box {\n  padding: 10px 22px;\n  background: white;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-bottom: 30px;\n  margin-right: 15px;\n  border-radius: 8px;\n}\n.daanbot__options {\n  flex: 1;\n  align-items: flex-start;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 100px;\n}\n.daanbot__option {\n  display: inline-block;\n  background: #5E6BF6;\n  color: white;\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  max-width: 300px;\n  text-align: center;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  vertical-align: top;\n  cursor: pointer;\n  margin-bottom: 10px;\n  opacity: 0;\n  -webkit-animation: fadeIn 500ms;\n          animation: fadeIn 500ms;\n  -webkit-animation-fill-mode: forwards;\n          animation-fill-mode: forwards;\n}\n@media (max-width: 400px) {\n  .daanbot__option {\n    display: block;\n    max-width: 100vw;\n    margin-left: auto;\n    margin-right: auto;\n    text-align: center;\n  }\n}\n.daanbot__option:nth-child(2) {\n  -webkit-animation-delay: 100ms;\n          animation-delay: 100ms;\n}\n.daanbot__option:nth-child(3) {\n  -webkit-animation-delay: 200ms;\n          animation-delay: 200ms;\n}\n.daanbot__option:nth-child(4) {\n  -webkit-animation-delay: 300ms;\n          animation-delay: 300ms;\n}\n.daanbot__option:nth-child(5) {\n  -webkit-animation-delay: 400ms;\n          animation-delay: 400ms;\n}\n.daanbot__option:nth-child(6) {\n  -webkit-animation-delay: 500ms;\n          animation-delay: 500ms;\n}\n.daanbot__option:nth-child(7) {\n  -webkit-animation-delay: 600ms;\n          animation-delay: 600ms;\n}\n.daanbot__option:nth-child(8) {\n  -webkit-animation-delay: 700ms;\n          animation-delay: 700ms;\n}\n.daanbot__option:hover {\n  opacity: 0.8;\n}\n@-webkit-keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n.daanbot__bottom {\n  background: #FCFBFF;\n  position: -webkit-sticky;\n  position: sticky;\n  bottom: 0;\n  padding-top: 8px;\n  margin-top: 20px;\n  flex: none;\n}\n.daanbot__bottom__textarea {\n  display: flex;\n  align-items: flex-start;\n  margin-bottom: 10px;\n}\n.daanbot__bottom__textarea textarea {\n  width: 100%;\n  font-size: 16px;\n  padding: 10px 30px;\n  background: white;\n  resize: none;\n  box-shadow: 0px 4px 13px rgba(30, 24, 104, 0.14);\n  margin-right: 10px;\n  border-radius: 8px;\n  border: 1px solid white;\n}\n.daanbot__bottom__textarea textarea:focus {\n  border: 1px solid black;\n}\n.daanbot__bottom__textarea button {\n  flex: none;\n  height: -webkit-fit-content;\n  height: -moz-fit-content;\n  height: fit-content;\n  padding: 2px 5px;\n  border-radius: 100%;\n  background: #5E6BF6;\n}\n.daanbot__bottom__textarea button svg {\n  width: 30px;\n}\n\n@-webkit-keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}\n\n@keyframes sinus {\n  0% {\n    transform: translateY(-3px);\n  }\n  50% {\n    transform: translateY(7px);\n  }\n  100% {\n    transform: translateY(-3px);\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -29567,200 +29591,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "svg",
-    {
-      attrs: {
-        width: "111px",
-        height: "113px",
-        viewBox: "0 0 111 113",
-        version: "1.1",
-        xmlns: "http://www.w3.org/2000/svg",
-        "xmlns:xlink": "http://www.w3.org/1999/xlink",
-      },
-    },
-    [
-      _c(
-        "g",
-        {
-          attrs: {
-            id: "Artboard",
-            stroke: "none",
-            "stroke-width": "1",
-            fill: "none",
-            "fill-rule": "evenodd",
-          },
-        },
-        [
-          _c("rect", {
-            attrs: {
-              id: "Rectangle-2",
-              fill: "#5E6BF6",
-              x: "0",
-              y: "0",
-              width: "112",
-              height: "114",
-            },
-          }),
-          _vm._v(" "),
-          _c("g", { attrs: { id: "man" } }, [
-            _c("rect", {
-              attrs: {
-                id: "Rectangle-3-Copy",
-                fill: "#E3E5F1",
-                x: "51",
-                y: "84",
-                width: "10",
-                height: "9",
-              },
-            }),
-            _vm._v(" "),
-            _c(
-              "g",
-              {
-                attrs: {
-                  id: "Oval-Copy-4-+-Combined-Shape-Mask",
-                  transform: "translate(28.000000, 90.000000)",
-                },
-              },
-              [
-                _c("path", {
-                  attrs: {
-                    d: "M28,47.4107143 C43.1828098,47.4107143 55.4909091,36.9293805 55.4909091,24 C55.4909091,11.0706195 44.6109968,0.589285714 28,0.589285714 C11.3890032,0.589285714 0.509090909,11.0706195 0.509090909,24 C0.509090909,36.9293805 12.8171902,47.4107143 28,47.4107143 Z",
-                    id: "Oval-Copy-4",
-                    fill: "#FFFFFF",
-                  },
-                }),
-                _vm._v(" "),
-                _c("path", {
-                  attrs: {
-                    d: "M31.2820978,0.729932933 C30.3317924,0.742212624 29.4218239,0.750779244 28.5631047,0.750779244 C15.9107631,0.750779244 5.21768013,10.8406455 5.21768013,22.6457321 C5.21768013,34.4508186 14.8385676,43.437029 27.4909091,43.437029 C35.0018779,43.437029 46.8115198,36.0590109 55.1691321,27.5930855 C53.1390264,38.8167366 41.7480464,47.4107143 28,47.4107143 C12.8171902,47.4107143 0.509090909,36.9293805 0.509090909,24 C0.509090909,11.0706195 11.3890032,0.589285714 28,0.589285714 C29.120644,0.589285714 30.2152036,0.63699034 31.2820978,0.729932933 Z",
-                    id: "Combined-Shape",
-                    fill: "#E3E5F1",
-                  },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c("rect", {
-              attrs: {
-                id: "Rectangle-3",
-                fill: "#E3E5F1",
-                x: "55",
-                y: "11",
-                width: "2",
-                height: "9",
-              },
-            }),
-            _vm._v(" "),
-            _c(
-              "g",
-              {
-                attrs: {
-                  id: "Group",
-                  transform: "translate(16.000000, 19.000000)",
-                  fill: "#FFFFFF",
-                },
-              },
-              [
-                _c("ellipse", {
-                  attrs: {
-                    id: "Oval-Copy",
-                    cx: "40",
-                    cy: "33",
-                    rx: "35.9493671",
-                    ry: "33",
-                  },
-                }),
-                _vm._v(" "),
-                _c("ellipse", {
-                  attrs: {
-                    id: "Oval-Copy-2",
-                    cx: "57.2151899",
-                    cy: "33",
-                    rx: "22.7848101",
-                    ry: "16.7538462",
-                  },
-                }),
-                _vm._v(" "),
-                _c("ellipse", {
-                  attrs: {
-                    id: "Oval-Copy-3",
-                    cx: "22.7848101",
-                    cy: "33",
-                    rx: "22.7848101",
-                    ry: "16.7538462",
-                  },
-                }),
-              ]
-            ),
-            _vm._v(" "),
-            _c("path", {
-              attrs: {
-                d: "M55.3904619,84.9812704 C40.2734362,84.5246974 27.4843185,75.7651463 22.4298258,63.5884935 C18.4470822,60.5792109 16,56.4964657 16,52 C16,47.5035343 18.4470822,43.4207891 22.4298258,40.4115065 C27.4843185,28.2348537 40.2734362,19.4753026 55.3904619,19.0187296 C38.6126562,19.6104911 24.2293727,34.1502386 24.2293727,52 C24.2293727,69.8497614 38.6126562,84.3895089 55.3904673,84.9812706 Z M56.5357236,84.9998865 C58.3740613,84.9948723 60.5603923,84.8237618 63,84.5000776 C60.9322264,84.8286451 58.8045213,85 56.6325276,85 C56.6002508,85 56.5679838,84.9999622 56.5357265,84.9998865 Z M63,19.4999224 C60.5603923,19.1762382 58.3740613,19.0051277 56.5357236,19.0001135 C56.5679838,19.0000378 56.6002508,19 56.6325276,19 C58.8045213,19 60.9322264,19.1713549 62.9999915,19.4999211 Z",
-                id: "Combined-Shape",
-                fill: "#E3E5F1",
-              },
-            }),
-            _vm._v(" "),
-            _c("circle", {
-              attrs: { id: "Oval", fill: "#FFFFFF", cx: "56", cy: "9", r: "4" },
-            }),
-            _vm._v(" "),
-            _c("path", {
-              attrs: {
-                d: "M57,5.03094688 C54.8076047,5.27699592 53.1111111,6.96019117 53.1111111,9 C53.1111111,11.0398088 54.8076047,12.7230041 57,12.9690531 C56.8180032,12.9894783 56.6325891,13 56.4444444,13 C53.9898456,13 52,11.209139 52,9 C52,6.790861 53.9898456,5 56.4444444,5 C56.6325891,5 56.8180032,5.01052167 57,5.03094688 Z",
-                id: "Combined-Shape",
-                fill: "#E3E5F1",
-              },
-            }),
-            _vm._v(" "),
-            _c("ellipse", {
-              attrs: {
-                id: "Oval-2",
-                fill: "#DEEEF8",
-                cx: "56.5",
-                cy: "54",
-                rx: "25.5",
-                ry: "20",
-              },
-            }),
-            _vm._v(" "),
-            _c("circle", {
-              attrs: {
-                id: "Oval-3",
-                fill: "#272168",
-                cx: "43.5",
-                cy: "52.5",
-                r: "3.5",
-              },
-            }),
-            _vm._v(" "),
-            _c("circle", {
-              attrs: {
-                id: "Oval-3-Copy",
-                fill: "#272168",
-                cx: "68.5",
-                cy: "52.5",
-                r: "3.5",
-              },
-            }),
-            _vm._v(" "),
-            _c("path", {
-              attrs: {
-                d: "M50,63 C52.2540184,65.5319132 59.2225357,65.7981009 62,63",
-                id: "Path-2",
-                stroke: "#272168",
-                "stroke-width": "2",
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round",
-              },
-            }),
-          ]),
-        ]
-      ),
-    ]
-  )
+  return _c("img", { attrs: { src: "/img/daan.jpg" } })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -29855,27 +29686,58 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "daanbot", class: { "daanbot--loading": _vm.loading } },
+    {
+      staticClass: "daanbot",
+      class: {
+        "daanbot--loading": _vm.loading,
+        "daanbot--welcome": _vm.welcome,
+      },
+    },
     [
       _c("div", { staticClass: "daanbot__container" }, [
         _c(
           "div",
           { staticClass: "daanbot__chats" },
-          _vm._l(_vm.chats, function (chat, index) {
-            return _c("chat", {
-              key: "chat" + chat.id + "-" + index,
-              ref: "chat",
-              refInFor: true,
-              attrs: { chat: chat },
-              on: {
-                scroll: _vm.scrollToEnd,
-                ready: function ($event) {
-                  return _vm.showOptions(chat)
-                },
-              },
-            })
-          }),
-          1
+          [
+            _c("div", { staticClass: "daanbot__welcome" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "daanbot__welcome__right" }, [
+                _c("h1", [_vm._v("Daan Muilkens")]),
+                _vm._v(" "),
+                _c("h2", [_vm._v("Freelance webdeveloper")]),
+                _vm._v(" "),
+                _vm.welcome
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "daanbot__option",
+                        on: { click: _vm.start },
+                      },
+                      [_vm._v("Contact")]
+                    )
+                  : _vm._e(),
+              ]),
+            ]),
+            _vm._v(" "),
+            _vm._l(_vm.chats, function (chat, index) {
+              return !_vm.welcome
+                ? _c("chat", {
+                    key: "chat" + chat.id + "-" + index,
+                    ref: "chat",
+                    refInFor: true,
+                    attrs: { chat: chat },
+                    on: {
+                      scroll: _vm.scrollToEnd,
+                      ready: function ($event) {
+                        return _vm.showOptions(chat)
+                      },
+                    },
+                  })
+                : _vm._e()
+            }),
+          ],
+          2
         ),
         _vm._v(" "),
         _c(
@@ -29902,75 +29764,89 @@ var render = function () {
           0
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "daanbot__bottom" }, [
-          _c("div", { staticClass: "daanbot__bottom__textarea" }, [
-            _c("textarea", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.message,
-                  expression: "message",
-                },
-              ],
-              attrs: { disabled: !_vm.typing, placeholder: _vm.placeholder },
-              domProps: { value: _vm.message },
-              on: {
-                keypress: _vm.enter,
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.message = $event.target.value
-                },
-              },
-            }),
-            _vm._v(" "),
-            _c("button", { on: { click: _vm.askQuestion } }, [
-              _c(
-                "svg",
-                {
+        !_vm.welcome
+          ? _c("div", { staticClass: "daanbot__bottom" }, [
+              _c("div", { staticClass: "daanbot__bottom__textarea" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.message,
+                      expression: "message",
+                    },
+                  ],
                   attrs: {
-                    width: "43px",
-                    height: "39px",
-                    viewBox: "0 0 43 39",
-                    version: "1.1",
-                    xmlns: "http://www.w3.org/2000/svg",
-                    "xmlns:xlink": "http://www.w3.org/1999/xlink",
+                    disabled: !_vm.typing,
+                    placeholder: _vm.placeholder,
                   },
-                },
-                [
+                  domProps: { value: _vm.message },
+                  on: {
+                    keypress: _vm.enter,
+                    input: function ($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.message = $event.target.value
+                    },
+                  },
+                }),
+                _vm._v(" "),
+                _c("button", { on: { click: _vm.askQuestion } }, [
                   _c(
-                    "g",
+                    "svg",
                     {
                       attrs: {
-                        id: "Artboard-2",
-                        stroke: "none",
-                        "stroke-width": "1",
-                        fill: "none",
-                        "fill-rule": "evenodd",
+                        width: "43px",
+                        height: "39px",
+                        viewBox: "0 0 43 39",
+                        version: "1.1",
+                        xmlns: "http://www.w3.org/2000/svg",
+                        "xmlns:xlink": "http://www.w3.org/1999/xlink",
                       },
                     },
                     [
-                      _c("path", {
-                        attrs: {
-                          d: "M5.84253488,2.191555 L38.893123,17.6901217 C39.8931944,18.1590899 40.3237386,19.3499816 39.8547705,20.350053 C39.6418497,20.8041051 39.2661191,21.1615969 38.8020423,21.3516793 L5.84879589,34.8490893 C4.8266448,35.2677549 3.65863205,34.7785333 3.23996641,33.7563822 C3.05750331,33.3109078 3.04183861,32.814568 3.19584781,32.3584743 L6.55199013,22.4193586 C6.79807151,21.690596 7.44028425,21.1675335 8.20376919,21.0740357 L15.6898279,20.1572781 C16.2005213,20.0947376 16.563821,19.6300397 16.5012804,19.1193463 C16.4479363,18.6837488 16.0978189,18.3444484 15.6607623,18.3047963 L8.30152752,17.6371271 C7.4878691,17.5633076 6.8009141,17.0020118 6.56640033,16.2193927 L3.07755727,4.57642929 C2.7604989,3.51834245 3.36122117,2.40356699 4.41930802,2.08650863 C4.89049321,1.94531681 5.39718504,1.98271502 5.84253488,2.191555 Z",
-                          id: "Path-4",
-                          fill: "#FFFFFF",
+                      _c(
+                        "g",
+                        {
+                          attrs: {
+                            id: "Artboard-2",
+                            stroke: "none",
+                            "stroke-width": "1",
+                            fill: "none",
+                            "fill-rule": "evenodd",
+                          },
                         },
-                      }),
+                        [
+                          _c("path", {
+                            attrs: {
+                              d: "M5.84253488,2.191555 L38.893123,17.6901217 C39.8931944,18.1590899 40.3237386,19.3499816 39.8547705,20.350053 C39.6418497,20.8041051 39.2661191,21.1615969 38.8020423,21.3516793 L5.84879589,34.8490893 C4.8266448,35.2677549 3.65863205,34.7785333 3.23996641,33.7563822 C3.05750331,33.3109078 3.04183861,32.814568 3.19584781,32.3584743 L6.55199013,22.4193586 C6.79807151,21.690596 7.44028425,21.1675335 8.20376919,21.0740357 L15.6898279,20.1572781 C16.2005213,20.0947376 16.563821,19.6300397 16.5012804,19.1193463 C16.4479363,18.6837488 16.0978189,18.3444484 15.6607623,18.3047963 L8.30152752,17.6371271 C7.4878691,17.5633076 6.8009141,17.0020118 6.56640033,16.2193927 L3.07755727,4.57642929 C2.7604989,3.51834245 3.36122117,2.40356699 4.41930802,2.08650863 C4.89049321,1.94531681 5.39718504,1.98271502 5.84253488,2.191555 Z",
+                              id: "Path-4",
+                              fill: "#FFFFFF",
+                            },
+                          }),
+                        ]
+                      ),
                     ]
                   ),
-                ]
-              ),
-            ]),
-          ]),
-        ]),
+                ]),
+              ]),
+            ])
+          : _vm._e(),
       ]),
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "daanbot__welcome__avatar" }, [
+      _c("img", { attrs: { src: "/img/daan.jpg" } }),
+    ])
+  },
+]
 render._withStripped = true
 
 
