@@ -80,7 +80,7 @@ class Conversation extends Model
         if($last){
             $response = new Chat;
             $response->conversation_id = $this->id;
-            $response->content = '<p>Ja.. dit is awkward. Ik ben een behoorlijk domme bot en ik kan nog helemaal geen tekst interpreteren. Ik kan wel, de bovenstaande vraag nog en keer stellen :-)</p>';
+            $response->content = '<p>Ja.. dit is awkward. Dit is een behoorlijk domme chatbot en kan nog helemaal geen tekst interpreteren. Hij kan wel de bovenste vraag nog eens herhalen :-)</p>';
             $response->save();
 
             // Repeat question
