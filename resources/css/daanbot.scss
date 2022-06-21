@@ -160,6 +160,7 @@ body{
 
         @media (max-width:500px){
             padding-left: 50px;
+            justify-content: center;
         }
     }
 
@@ -293,6 +294,9 @@ body{
 
     &__options {
         flex:1;
+        @media (max-width:500px){
+            flex:none;
+        }
         align-items: flex-start;
         position: sticky;
         bottom: 100px;
