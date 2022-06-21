@@ -17,7 +17,7 @@ class Flow extends Model
 
         static::creating(function ($flow) {
             // Same code here
-            $flow->meta = '{"scale": 1, "centerX": 437, "centerY": 288}';
+            $flow->meta = ["scale" => 1, "centerX" => 437, "centerY" => 288];
         });
     }
 

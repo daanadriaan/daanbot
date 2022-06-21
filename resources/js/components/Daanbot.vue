@@ -146,7 +146,12 @@ export default {
             }, 100);
         },
         showOptions(chat){
-            this.options = chat.options;
+            if(chat.content !== this.chats[this.chats.length -1].content) return; // dirty hack to tackle faulty calls to this function.
+            let options = [];
+            for(let option of chat.options){ // dirty hack to tackle doubles
+                if(!options.map(item => item.id).includes(option.id)) options.push(option);
+            }
+            this.options = options;
             this.scrollToEnd();
         },
         checkInitial(data){
