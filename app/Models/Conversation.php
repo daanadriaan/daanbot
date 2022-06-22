@@ -67,15 +67,49 @@ class Conversation extends Model
         return $chat;
     }
 
-    public function interpretMessage($message){
-        // Get last question
-        $last = optional($this->chats()->lastQuestion()->first())->response;
-
+    public function interpretMessage($message = ''){
+        // Their own message
         $chat = new Chat;
         $chat->user_input = true;
         $chat->conversation_id = $this->id;
         $chat->content = '<p>'.$message.'</p>';
         $chat->save();
+
+        // Try to find interpreter
+        $matches = null;
+        $highestPercentage = 0;
+        $bestMatch = 0;
+
+        foreach(Interpretable::all() as $interpretable){
+            foreach($interpretable->queries as $query){
+                if(strpos(preg_replace('/[^a-z\-]/', '', strtolower($message)), strtolower($query->query)) > -1){
+                    // match
+                    $matches[$interpretable->id]['percentage'] = ($matches[$interpretable->id]['percentage'] ?? 0)+ $query->percentage;
+                }
+            }
+            if(isset($matches[$interpretable->id]['percentage'])){
+                $matches[$interpretable->id]['interpretable'] = $interpretable;
+                if($matches[$interpretable->id]['percentage'] > $highestPercentage){
+                    $highestPercentage = $matches[$interpretable->id]['percentage'];
+                    $bestMatch = $interpretable;
+                }
+            }
+        }
+
+        if($bestMatch){
+            if($start = $bestMatch->flow->start){
+
+            }
+            $response = request()->conversation->createChatFromResponse($start);
+
+            return [
+                'chat' => $chat,
+                'responses' => [$response]
+            ];
+        }
+
+        // Get last question
+        $last = optional($this->chats()->lastQuestion()->whereHas('response')->first())->response;
 
         if($last){
             $response = new Chat;
@@ -85,11 +119,11 @@ class Conversation extends Model
 
             // Repeat question
             $repeat = $this->createChatFromResponse($last);
-        }
 
-        return [
-            'chat' => $chat,
-            'responses' => [$response, $repeat]
-        ];
+            return [
+                'chat' => $chat,
+                'responses' => [$response, $repeat]
+            ];
+        }
     }
 }

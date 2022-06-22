@@ -43,7 +43,7 @@ class InterpreterQuery extends Resource
                 ->rules('required', 'max:255'),
 
             Number::make('Percentage'),
-            Number::make('Counter')
+            Number::make('Counter')->exceptOnForms()
         ];
     }
 }

@@ -53,7 +53,7 @@ class Interpretable extends Resource
             }),
             BelongsTo::make('Flow', 'flow', Flow::class),
             HasMany::make('Queries', 'queries', InterpreterQuery::class),
-            Number::make('Counter')
+            Number::make('Counter')->exceptOnForms()
         ];
     }
 }

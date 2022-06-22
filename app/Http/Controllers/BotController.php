@@ -38,9 +38,6 @@ class BotController extends Controller
     }
 
     public function interpret(Request $request){
-        // TODO: interpret
-        // TODO: validate
-
         $chats = $request->conversation->interpretMessage($request->message);
 
         return response()->json($chats);

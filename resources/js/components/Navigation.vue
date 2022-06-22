@@ -1,6 +1,6 @@
 <template>
     <div class="navigation">
-        <router-link class="cursor-pointer" replace :to="{name: 'maker', params:{id: flow.id}}" v-for="flow in $root.flows">
+        <router-link class="cursor-pointer" replace :to="{name: 'maker', params:{id: flow.id}}" v-for="flow in $root.flows" :key="flow.id">
             <input v-model="flow.name" @change="update(flow)">
         </router-link>
         <a @click="add">+</a>

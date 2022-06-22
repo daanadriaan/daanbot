@@ -2380,21 +2380,23 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
 
       var options = [];
 
-      var _iterator = _createForOfIteratorHelper(chat.options),
-          _step;
+      if (chat.options) {
+        var _iterator = _createForOfIteratorHelper(chat.options),
+            _step;
 
-      try {
-        for (_iterator.s(); !(_step = _iterator.n()).done;) {
-          var option = _step.value;
-          // dirty hack to tackle doubles
-          if (!options.map(function (item) {
-            return item.id;
-          }).includes(option.id)) options.push(option);
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var option = _step.value;
+            // dirty hack to tackle doubles
+            if (!options.map(function (item) {
+              return item.id;
+            }).includes(option.id)) options.push(option);
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
         }
-      } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
       }
 
       this.options = options;
