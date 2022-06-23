@@ -21280,6 +21280,7 @@ var render = function () {
         return _c(
           "router-link",
           {
+            key: flow.id,
             staticClass: "cursor-pointer",
             attrs: {
               replace: "",

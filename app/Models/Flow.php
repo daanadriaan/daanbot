@@ -25,6 +25,10 @@ class Flow extends Model
         return $this->hasMany(Step::class);
     }
 
+    public function interpretables(){
+        return $this->hasMany(Interpretable::class);
+    }
+
     public function start(){
         return $this->belongsTo(Response::class, 'type_id');
     }

@@ -19,6 +19,8 @@ class InterpreterQuery extends Resource
      */
     public static $model = \App\Models\InterpreterQuery::class;
 
+    public static $displayInNavigation = false;
+
     /**
      * The columns that should be searched.
      *

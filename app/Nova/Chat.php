@@ -2,29 +2,37 @@
 
 namespace App\Nova;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Flow extends Resource
+class Chat extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Flow::class;
+    public static $model = \App\Models\Chat::class;
+
+    public static $perPageViaRelationship = 30;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'content';
+
+    public static $displayInNavigation = false;
 
     /**
      * The columns that should be searched.
@@ -32,7 +40,7 @@ class Flow extends Resource
      * @var array
      */
     public static $search = [
-        'name'
+        'content'
     ];
 
     /**
@@ -44,11 +52,12 @@ class Flow extends Resource
     public function fields(Request $request)
     {
         return [
-            Text::make('Name'),
-            HasMany::make('Interpreters', 'interpretables', Interpretable::class),
-            Text::make('Interpreters', function(){
-                return substr($this->interpretables->pluck('suggestion')->implode(', '), 0, 120);
-            }),
+            Boolean::make('User input'),
+            DateTime::make('Created At')->sortable(true),
+            Text::make('Content')
+                ->withMeta(['textAlign' => $this->user_input ? 'right' : 'left'])
+                ->asHtml(),
+            BelongsTo::make('Conversation', 'conversation', Conversation::class),
         ];
     }
 }
