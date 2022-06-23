@@ -1,5 +1,6 @@
 $bg: #FCFBFF;
 $purple: #5E6BF6;
+$purple_light: #959be1;
 $shadow: 0px 4px 13px rgba(30,24,104,0.14);
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
@@ -316,6 +317,15 @@ body{
         opacity:0;
         animation: fadeIn 500ms;
         animation-fill-mode: forwards;
+        transition: 300ms transform ease;
+
+        &:hover{
+            transform:scale(1.05);
+        }
+
+        &--checked{
+            background-color: $purple_light;
+        }
 
         @media (max-width: 400px){
             display: block;

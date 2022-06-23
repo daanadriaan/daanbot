@@ -22,9 +22,10 @@
             </div>
             <div class="daanbot__options" >
                 <div class="daanbot__option daanbot__box"
+                     :class="{'daanbot__option--checked': option.checked}"
                      v-for="option in options"
+                     v-html="option.label"
                      @click="chooseOption(option)">
-                    {{ option.label }}
                 </div>
             </div>
             <div class="daanbot__bottom" v-if="!welcome">

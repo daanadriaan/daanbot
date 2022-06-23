@@ -23,8 +23,12 @@
               @linkAdded="linkAdded"
               @canvasClick="canvasClick"/>
         <div v-if="editable" class="botmaker-window">
-            <div v-if="editable.type !== 'Flow'">
+            <div v-if="editable.type !== 'Flow' && editable.type !== 'Option'">
                 <input class="form-control" v-model="editable.label">
+            </div>
+            <div v-if="editable.type === 'Option'">
+                <editor v-model='editable.label'
+                        :init='editorOptions'></editor>
             </div>
             <div v-if="editable.type !== 'Flow'">
                 <editor v-model='editable.content'

@@ -2551,6 +2551,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -21167,7 +21171,7 @@ var render = function () {
       _vm._v(" "),
       _vm.editable
         ? _c("div", { staticClass: "botmaker-window" }, [
-            _vm.editable.type !== "Flow"
+            _vm.editable.type !== "Flow" && _vm.editable.type !== "Option"
               ? _c("div", [
                   _c("input", {
                     directives: [
@@ -21190,6 +21194,25 @@ var render = function () {
                     },
                   }),
                 ])
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.editable.type === "Option"
+              ? _c(
+                  "div",
+                  [
+                    _c("editor", {
+                      attrs: { init: _vm.editorOptions },
+                      model: {
+                        value: _vm.editable.label,
+                        callback: function ($$v) {
+                          _vm.$set(_vm.editable, "label", $$v)
+                        },
+                        expression: "editable.label",
+                      },
+                    }),
+                  ],
+                  1
+                )
               : _vm._e(),
             _vm._v(" "),
             _vm.editable.type !== "Flow"

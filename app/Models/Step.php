@@ -7,8 +7,9 @@ use Illuminate\Support\Str;
 
 class Step extends Model
 {
-    protected $visible = ['id', 'label', 'content', 'options', 'redirect_flow_id', 'redirect'];
+    protected $visible = ['id', 'label', 'content', 'options', 'redirect_flow_id', 'redirect', 'checked'];
     protected $table = 'steps';
+    public $appends = ['checked'];
 
     public function parents(): BelongsToMany
     {
@@ -59,5 +60,16 @@ class Step extends Model
         $step->save();
 
         return $step;
+    }
+
+    public function getCheckedAttribute()
+    {
+        if($this->type === 'Option'){
+            if($redirect = $this->redirect){
+                return request()->conversation->chats()->where('user_input', 1)->where('type_id', $this->redirect->type_id)->count() > 0;
+            }
+            return request()->conversation->chats()->where('user_input', 1)->where('type_id', $this->id)->count() > 0;
+        }
+        return false;
     }
 }

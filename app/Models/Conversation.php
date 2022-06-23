@@ -62,6 +62,7 @@ class Conversation extends Model
         $chat->user_input = true;
         $chat->conversation_id = $this->id;
         $chat->content = $option->content;
+        $chat->type_id = $option->id;
         $chat->save();
 
         return $chat;
