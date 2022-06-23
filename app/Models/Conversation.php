@@ -83,7 +83,7 @@ class Conversation extends Model
 
         foreach(Interpretable::all() as $interpretable){
             foreach($interpretable->queries as $query){
-                if(strpos(preg_replace('/[^a-z\-]/', '', strtolower($message)), strtolower($query->query)) > -1){
+                if(preg_replace('/[^a-z\-]/', '', strtolower($message)) === strtolower($query->query) || strpos(preg_replace('/[^a-z\-]/', '', strtolower($message)), strtolower($query->query)) > -1){
                     // match
                     $matches[$interpretable->id]['percentage'] = ($matches[$interpretable->id]['percentage'] ?? 0)+ $query->percentage;
                 }
