@@ -230,7 +230,10 @@ body{
             }
 
             &__container{
-
+                @media (max-width: 500px){
+                    max-width: calc(100vw - 70px);
+                    word-break: break-word;
+                }
             }
             &__ball{
                 display:none;
@@ -296,17 +299,37 @@ body{
     &__options {
         flex:1;
         @media (max-width:500px){
+            margin:0 -15px;
+            padding: 0 10px 0 15px;
             flex:none;
+            display:flex;
+            overflow-x:scroll;
+            &__spacer{
+                content:'';
+                flex:1;
+            }
+            &::after{
+                content: "";
+                position: fixed;
+                height: 60px;
+                bottom: 112px;
+                right: 0;
+                width: 15px;
+                background: linear-gradient(-90deg, #FCFBFF, transparent);
+            }
         }
         align-items: flex-start;
         position: sticky;
-        bottom: 100px;
+        bottom: 80px;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
     }
 
     &__option {
         display: inline-block;
         background: $purple;
         color: white;
+        min-width: fit-content;
         width: max-content;
         max-width: 300px;
         text-align: center;
@@ -325,13 +348,14 @@ body{
 
         &--checked{
             background-color: $purple_light;
+            order: 1;
         }
 
         @media (max-width: 400px){
             display: block;
             max-width: 100vw;
             margin-left: auto;
-            margin-right: auto;
+            margin-right: 5px;
             text-align: center;
         }
 
@@ -376,7 +400,7 @@ body{
         position: sticky;
         bottom: 0;
         padding-top: 8px;
-        margin-top: 20px;
+        margin-top: 0px;
         flex: none;
 
         &__textarea {
@@ -396,6 +420,10 @@ body{
                 border: 1px solid white;
                 &:focus{
                     border: 1px solid black;
+                }
+
+                @media (max-width:500px){
+                    padding-left:15px;
                 }
             }
             button{

@@ -21,12 +21,14 @@
                       :chat="chat"/>
             </div>
             <div class="daanbot__options" >
+                <div class="daanbot__options__spacer"></div>
                 <div class="daanbot__option daanbot__box"
                      :class="{'daanbot__option--checked': option.checked}"
                      v-for="option in options"
                      v-html="option.label"
                      @click="chooseOption(option)">
                 </div>
+                <div class="daanbot__options__spacer"></div>
             </div>
             <div class="daanbot__bottom" v-if="!welcome">
                 <div class="daanbot__bottom__textarea">

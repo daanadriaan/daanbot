@@ -49,7 +49,7 @@ export default {
         contents(){
             var html = new DOMParser().parseFromString(this.chat.content, "text/html");
             return Array.prototype.slice.call(html.getElementsByTagName('p')).map(p => {
-                p = p.innerHTML; return p;
+                p = p.innerHTML.replace('\xa0', ' '); return p;
             });
         }
     },
