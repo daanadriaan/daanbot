@@ -64,7 +64,7 @@ class Step extends Model
 
     public function getCheckedAttribute()
     {
-        if($this->type === 'Option'){
+        if($this->type === 'Option' && request()->conversation){
             if($redirect = $this->redirect){
                 return request()->conversation->chats()->where('user_input', 1)->where('type_id', $this->redirect->type_id)->count() > 0;
             }
