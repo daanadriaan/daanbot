@@ -68,7 +68,7 @@ export default {
                 }else{
                     this.$emit('ready', this.chat);
                 }
-            }.bind(this), this.chat.delay ? this.chat.delay : 2000)
+            }.bind(this), this.chat?.delay ? this.chat.delay : 2000)
         }
     },
 }

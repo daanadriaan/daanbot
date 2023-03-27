@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <chat :ref="'chat'"
-                      v-if="!welcome"
+                      v-if="!welcome && chat"
                       @scroll="scrollToEnd"
                       @ready="showOptions(chat)"
                       :key="'chat'+chat.id+'-'+index"
@@ -93,7 +93,7 @@ export default {
             setTimeout(timer => {
                 this.chats = this.chats.concat(chats);
                 if(delay === 0){
-                    this.chats = this.chats.map(item => {item.delay = 1; return item;});
+                    this.chats = this.chats.map(item => { if(item) item.delay = 1; return item;});
                 }
                 this.scrollToEnd();
             }, delay);

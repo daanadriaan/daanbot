@@ -2176,6 +2176,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     load: function load(key) {
+      var _this$chat;
+
       //var self = this;
       this.$emit('scroll', this.chat);
       setTimeout(function () {
@@ -2186,7 +2188,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this.$emit('ready', this.chat);
         }
-      }.bind(this), this.chat.delay ? this.chat.delay : 2000);
+      }.bind(this), (_this$chat = this.chat) !== null && _this$chat !== void 0 && _this$chat.delay ? this.chat.delay : 2000);
     }
   }
 });
@@ -2313,7 +2315,7 @@ __webpack_require__(/*! ./../../css/daanbot.scss */ "./resources/css/daanbot.scs
 
         if (delay === 0) {
           _this2.chats = _this2.chats.map(function (item) {
-            item.delay = 1;
+            if (item) item.delay = 1;
             return item;
           });
         }
@@ -29753,7 +29755,7 @@ var render = function () {
             ]),
             _vm._v(" "),
             _vm._l(_vm.chats, function (chat, index) {
-              return !_vm.welcome
+              return !_vm.welcome && chat
                 ? _c("chat", {
                     key: "chat" + chat.id + "-" + index,
                     ref: "chat",
